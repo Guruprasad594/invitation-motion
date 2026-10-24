@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14120f">
+  <meta name="description" content="Yashas and Nithina invite you to celebrate their wedding in Kundapura on 15 November 2026.">
+  <title>Yashas &amp; Nithina — A Wedding in Kundapura</title>
+  <link rel="preconnect" href="https://cdn.riwaaz.in" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --cream: #f7f0e4;
+      --soft: rgba(247, 240, 228, .78);
+      --gold: #d9c08a;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --sans: "DM Sans", "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { background: #14120f; scroll-behavior: smooth; }
+    body { margin: 0; color: var(--cream); background: #14120f; font-family: var(--sans); }
+    body.is-loading { height: 100svh; overflow: hidden; }
+    body.is-loading main { visibility: hidden; }
+    a { color: inherit; }
+    button { color: inherit; font: inherit; }
+    .skip-link { position: fixed; z-index: 30; top: 12px; left: 12px; padding: 10px 14px; color: #171410; background: var(--cream); transform: translateY(-150%); }
+    .skip-link:focus { transform: translateY(0); }
+
+    /* The long scroll is the film: each step advances to another real frame. */
+    .film-scroll { position: relative; height: 16000svh; }
+    .film-stage { position: sticky; top: 0; width: 100%; height: 100svh; min-height: 480px; overflow: hidden; isolation: isolate; background: #d8d7d2 url("https://cdn.riwaaz.in/wedding-websites/themes/rameswaram/poster.jpg") center / cover; }
+    .film-stage.is-opening { --cream: #f7f0e4; --soft: rgba(247,240,228,.84); --gold: #d9c08a; }
+    .film-stage.is-opening .film-shade { opacity: 1; background: linear-gradient(180deg, rgba(13,12,10,0) 26%, rgba(13,12,10,.16) 46%, rgba(12,10,8,.7) 100%); }
+    .film-stage.is-opening .brand, .film-stage.is-opening .top-date { color: rgba(247,240,228,.9); }
+    .film-stage.is-opening .chapter-label, .film-stage.is-opening .scroll-cue { color: rgba(247,240,228,.84); }
+    .film-image, .film-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .film-image { z-index: -2; background-repeat: no-repeat; background-size: 400% 200%; background-position: 0 0; transform: scale(1.025); will-change: transform; }
+    .film-image.is-loading { opacity: .45; }
+    .film-shade { z-index: -1; pointer-events: none; background: linear-gradient(180deg, rgba(13,12,10,.015) 0%, rgba(13,12,10,.025) 47%, rgba(12,10,8,.22) 100%); }
+    .film-stage::after { position: absolute; inset: 0; z-index: -1; pointer-events: none; content: ""; border: 1px solid rgba(255,255,255,.035); }
+    .masthead { position: absolute; z-index: 5; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 25px clamp(22px, 4vw, 62px); color: var(--cream); text-shadow: 0 2px 20px rgba(0,0,0,.18); }
+    .brand { font-size: 9px; font-weight: 600; letter-spacing: .22em; text-decoration: none; text-transform: uppercase; }
+    .top-date { color: rgba(247,240,228,.82); font-size: 8px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+
+    .chapter-copy { position: absolute; top: 67%; left: 50%; width: min(790px, calc(100% - 54px)); text-align: center; opacity: 0; transform: translate(-50%, calc(-50% + 18px)); pointer-events: none; transition: opacity .45s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+    .chapter-copy.is-current { opacity: 1; transform: translate(-50%, -50%); }
+    .chapter-copy[data-chapter="0"] { top: 56%; width: min(1000px, calc(100% - 54px)); }
+    .chapter-copy[data-chapter="11"] { top: 50%; }
+    .chapter-copy.is-current .reveal { animation: reveal-line .72s cubic-bezier(.2,.7,.2,1) both; }
+    .chapter-copy .reveal:nth-child(1) { animation-delay: .08s; }
+    .chapter-copy .reveal:nth-child(2) { animation-delay: .28s; }
+    .chapter-copy .reveal:nth-child(3) { animation-delay: .5s; }
+    .chapter-copy .reveal:nth-child(4) { animation-delay: .72s; }
+    .chapter-copy .reveal:nth-child(5) { animation-delay: .94s; }
+    .eyebrow { margin: 0 0 21px; color: var(--gold); font-size: 8px; font-weight: 600; letter-spacing: .3em; line-height: 1.8; text-transform: uppercase; }
+    h1, h2 { margin: 0; color: var(--cream); font: 400 clamp(48px, 7.1vw, 88px)/.97 var(--serif); letter-spacing: -.035em; text-shadow: 0 4px 32px rgba(0,0,0,.18); }
+    .chapter-copy[data-chapter="0"] h1 { color: var(--cream); font-size: clamp(44px, 6.2vw, 76px); line-height: .9; letter-spacing: -.045em; text-shadow: none; }
+    .chapter-copy[data-chapter="0"] .chapter-message { margin-top: 30px; }
+    .chapter-copy[data-chapter="0"] .chapter-meta { margin-top: 40px; }
+    h1 em, h2 em { font-weight: 400; }
+    .couple-names { margin: 0 0 23px; color: var(--soft); font-size: 9px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; }
+    .chapter-message { max-width: 470px; margin: 20px auto 0; color: var(--soft); font: 18px/1.48 var(--serif); }
+    .chapter-meta { margin: 24px 0 0; color: var(--soft); font: 10px/1.8 var(--serif); letter-spacing: .08em; text-transform: uppercase; }
+    .event-details { width: min(580px, 100%); margin: 30px auto 0; border-top: 1px solid rgba(217,192,138,.65); border-bottom: 1px solid rgba(217,192,138,.65); }
+    .event-row { display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: 16px; min-height: 58px; padding: 11px 4px; border-bottom: 1px solid rgba(247,240,228,.2); text-align: left; }
+    .event-row:last-child { border-bottom: 0; }
+    .event-row strong { color: var(--gold); font-size: 8px; letter-spacing: .18em; text-transform: uppercase; }
+    .event-row span { color: var(--cream); font: 18px/1.25 var(--serif); text-align: right; }
+    .signature { margin: 20px 0 0; color: var(--gold); font: italic 18px/1.3 var(--serif); }
+    .filigree { display: flex; align-items: center; justify-content: center; gap: 12px; width: 164px; margin: 24px auto 0; color: var(--gold); font: 13px var(--serif); }
+    .filigree::before, .filigree::after { width: 55px; height: 1px; content: ""; background: rgba(217,192,138,.66); }
+
+    .chapter-list { display: none; }
+    .chapter-button { display: grid; grid-template-columns: 23px 24px; align-items: center; gap: 8px; padding: 0; border: 0; color: rgba(247,240,228,.48); background: transparent; cursor: pointer; text-align: left; }
+    .chapter-button::after { grid-column: 2; grid-row: 1; width: 24px; height: 1px; margin-top: 19px; content: ""; background: rgba(247,240,228,.24); transition: width .3s ease, background .3s ease; }
+    .chapter-button span:first-child { grid-column: 1; grid-row: 1; font-size: 8px; letter-spacing: .08em; }
+    .chapter-button span:last-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+    .chapter-button[aria-current="step"] { color: var(--cream); }
+    .chapter-button[aria-current="step"]::after { width: 36px; background: var(--gold); }
+    .chapter-button:hover { color: var(--cream); }
+
+    .chapter-label, .scroll-cue { position: absolute; z-index: 5; bottom: 28px; display: flex; align-items: center; gap: 9px; color: rgba(247,240,228,.84); font-size: 8px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; text-shadow: 0 2px 18px rgba(0,0,0,.48); }
+    .chapter-label { left: clamp(22px, 4vw, 60px); }
+    .chapter-label .chapter-number { color: var(--gold); }
+    .scroll-cue { right: clamp(22px, 4vw, 60px); padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .scroll-cue[hidden] { display: none; }
+    .scroll-cue span { color: var(--gold); font-size: 16px; animation: float-down 1.7s ease-in-out infinite; }
+    .film-progress { position: absolute; z-index: 8; inset: auto 0 0; height: 2px; background: rgba(247,240,228,.2); }
+    .film-progress span { display: block; width: 0; height: 100%; background: var(--gold); transform-origin: left; }
+
+    .film-loader { position: fixed; z-index: 50; inset: 0; display: grid; align-content: center; justify-items: center; gap: 15px; padding: 28px; background: #14120f; text-align: center; opacity: 1; visibility: visible; transition: opacity .65s ease, visibility .65s ease; }
+    .film-loader.is-gone { opacity: 0; visibility: hidden; }
+    .loader-mark { display: grid; place-items: center; width: 46px; height: 46px; margin-bottom: 8px; border: 1px solid rgba(217,192,138,.6); border-radius: 50%; color: var(--gold); font: italic 14px var(--serif); }
+    .loader-copy { margin: 0; color: var(--gold); font-size: 8px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; }
+    .loader-title { margin: 0; color: var(--cream); font: 400 clamp(36px,6vw,54px)/.98 var(--serif); }
+    .loader-track { width: min(250px,70vw); height: 1px; margin-top: 12px; background: rgba(247,240,228,.2); }
+    .loader-track span { display: block; width: 0; height: 100%; background: var(--gold); transition: width .18s linear; }
+    .loader-percent { color: rgba(247,240,228,.58); font-size: 8px; letter-spacing: .18em; }
+    .loader-error { max-width: 320px; margin: 4px 0 0; color: var(--soft); font: 15px/1.5 var(--serif); }
+    .loader-retry { margin-top: 8px; padding: 11px 18px; border: 1px solid rgba(217,192,138,.7); background: transparent; color: var(--cream); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
+    @keyframes reveal-line { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes float-down { 0%,100% { transform: translateY(-2px); } 50% { transform: translateY(4px); } }
+    @media (max-width: 600px) {
+      .film-scroll { height: 16000svh; }
+      .film-stage { min-height: 540px; }
+      .film-image { object-position: center; }
+      .masthead { padding: 18px 19px; }
+      .brand { max-width: 55%; font-size: 7px; letter-spacing: .17em; }
+      .chapter-copy { top: 65%; width: calc(100% - 52px); }
+      .chapter-copy[data-chapter="0"] { top: 54%; width: calc(100% - 30px); }
+      .chapter-copy[data-chapter="11"] { top: 49%; width: calc(100% - 46px); }
+      h1, h2 { font-size: clamp(45px, 12vw, 67px); }
+      .chapter-copy[data-chapter="0"] h1 { font-size: clamp(42px, 10vw, 62px); line-height: .9; }
+      .chapter-copy[data-chapter="0"] .chapter-message, .chapter-copy[data-chapter="0"] .chapter-meta { margin-top: 20px; }
+      .eyebrow { margin-bottom: 18px; font-size: 7px; }
+      .couple-names { font-size: 7px; line-height: 1.8; }
+      .chapter-message { max-width: 330px; margin-top: 17px; font-size: 16px; }
+      .chapter-meta { margin-top: 18px; font-size: 8px; }
+      .event-details { margin-top: 20px; }
+      .event-row { grid-template-columns: 74px 1fr; gap: 8px; min-height: 48px; padding: 9px 2px; }
+      .event-row strong { font-size: 7px; letter-spacing: .13em; }
+      .event-row span { font-size: 15px; }
+      .signature { margin-top: 16px; font-size: 16px; }
+      .filigree { margin-top: 20px; }
+      .chapter-list { top: auto; right: 15px; bottom: 28px; display: flex; gap: 2px; transform: none; }
+      .chapter-button { display: block; width: 10px; height: 22px; }
+      .chapter-button::after { display: block; width: 8px; margin-top: 10px; }
+      .chapter-button[aria-current="step"]::after { width: 10px; }
+      .chapter-button span:first-child { display: block; font-size: 6px; }
+      .chapter-label { bottom: 31px; left: 19px; max-width: calc(100% - 175px); font-size: 7px; }
+      .scroll-cue { right: 19px; bottom: 70px; font-size: 7px; }
+      .top-date { font-size: 7px; letter-spacing: .13em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body class="is-loading">
+  <a class="skip-link" href="#film">Skip to invitation</a>
+  <div class="film-loader" id="film-loader" role="status" aria-live="polite">
+    <div class="loader-mark" aria-hidden="true">Y&amp;N</div>
+    <p class="loader-copy">Yashas &amp; Nithina</p>
+    <p class="loader-title">Preparing your<br>journey</p>
+    <div class="loader-track" aria-hidden="true"><span id="loader-progress"></span></div>
+    <span class="loader-percent" id="loader-percent">0%</span>
+    <p class="loader-error" id="loader-error" hidden></p>
+    <button class="loader-retry" id="loader-retry" type="button" hidden>Try loading again</button>
+  </div>
+  <main>
+    <section class="film-scroll" id="film" aria-label="A cinematic journey through the temple">
+      <div class="film-stage" id="film-stage">
+        <div class="film-image" id="film-image" role="img" aria-label="A carved temple journey from the entrance through pillared corridors to an arch overlooking the sea"></div>
+        <div class="film-shade" aria-hidden="true"></div>
+        <header class="masthead">
+          <span class="top-date">The celebrations &nbsp;↗</span>
+        </header>
+
+        <article class="chapter-copy is-current" data-chapter="0" aria-live="polite">
+          <p class="couple-names reveal">Yashas &amp; Nithina</p>
+          <h1 class="reveal">A celebration<br><em>to come home to.</em></h1>
+          <p class="chapter-message reveal">With our families’ blessings, join us as we begin forever.</p>
+          <p class="chapter-meta reveal">Sunday, 15 November 2026 &nbsp;·&nbsp; 11:51<br>R. N. Shetty Hall &nbsp;·&nbsp; Kundapura</p>
+        </article>
+        <article class="chapter-copy" data-chapter="1" aria-live="polite">
+          <p class="eyebrow reveal">In the quiet, we found our answer</p>
+          <h2 class="reveal">Some journeys<br><em>feel like prayer.</em></h2>
+          <p class="chapter-message reveal">With grateful hearts and our families’ blessings, we take our first steps towards forever.</p>
+          <div class="filigree reveal" aria-hidden="true">✦</div>
+        </article>
+        <article class="chapter-copy" data-chapter="2" aria-live="polite">
+          <p class="eyebrow reveal">A little light, a lifetime of love</p>
+          <h2 class="reveal">Every ordinary day.<br><em>With you.</em></h2>
+          <p class="chapter-message reveal">The laughter, the long way home, and all the little things that became our everything.</p>
+          <div class="filigree reveal" aria-hidden="true">✦</div>
+        </article>
+        <article class="chapter-copy" data-chapter="3" aria-live="polite">
+          <p class="eyebrow reveal">The people who made us</p>
+          <h2 class="reveal">A family’s love.<br><em>A shared beginning.</em></h2>
+          <p class="chapter-message reveal">Surrounded by the people dearest to us, we begin our next chapter.</p>
+          <div class="filigree reveal" aria-hidden="true">✦</div>
+        </article>
+        <article class="chapter-copy" data-chapter="4" aria-live="polite">
+          <p class="eyebrow reveal">A thousand little joys</p>
+          <h2 class="reveal">Our favourite place<br><em>is together.</em></h2>
+          <p class="chapter-message reveal">The quiet moments, the shared laughter, and a lifetime still to come.</p>
+          <div class="filigree reveal" aria-hidden="true">✦</div>
+        </article>
+        <article class="chapter-copy" data-chapter="5" aria-live="polite">
+          <p class="eyebrow reveal">The gathering</p>
+          <h2 class="reveal">All our favourite<br><em>people in one place.</em></h2>
+          <p class="chapter-message reveal">Your presence will make our special day even more meaningful.</p>
+          <div class="filigree reveal" aria-hidden="true">✦</div>
+        </article>
+        <article class="chapter-copy" data-chapter="6" aria-live="polite">
+          <p class="eyebrow reveal">A day to hold close</p>
+          <h2 class="reveal">One beautiful<br><em>beginning.</em></h2>
+          <p class="chapter-message reveal">Sunday, 15 November 2026</p>
+          <p class="chapter-meta reveal">11:51 &nbsp;·&nbsp; Kundapura</p>
+        </article>
+        <article class="chapter-copy" data-chapter="7" aria-live="polite">
+          <p class="eyebrow reveal">Come celebrate with us</p>
+          <h2 class="reveal">A place filled<br><em>with blessings.</em></h2>
+          <p class="chapter-message reveal">R. N. Shetty Hall<br>Kundapura</p>
+          <div class="filigree reveal" aria-hidden="true">✦</div>
+        </article>
+        <article class="chapter-copy" data-chapter="8" aria-live="polite">
+          <p class="eyebrow reveal">The horizon</p>
+          <h2 class="reveal">Our next chapter<br><em>starts here.</em></h2>
+          <p class="chapter-message reveal">With our families’ blessings and your good wishes.</p>
+          <p class="chapter-meta reveal">Sunday, 15 November &nbsp;·&nbsp; 11:51</p>
+        </article>
+        <article class="chapter-copy" data-chapter="9" aria-live="polite">
+          <p class="eyebrow reveal">The promise</p>
+          <h2 class="reveal">And so, our<br><em>forever begins.</em></h2>
+          <p class="chapter-message reveal">Come celebrate the beginning of Yashas and Nithina’s life together.</p>
+          <div class="filigree reveal" aria-hidden="true">✦</div>
+        </article>
+        <article class="chapter-copy" data-chapter="10" aria-live="polite">
+          <p class="eyebrow reveal">A new chapter begins</p>
+          <h2 class="reveal">Side by side<br><em>from this day on.</em></h2>
+          <p class="chapter-message reveal">With our families’ blessings, we step into a lifetime together.</p>
+          <div class="filigree reveal" aria-hidden="true">✦</div>
+        </article>
+        <article class="chapter-copy" data-chapter="11" aria-live="polite">
+          <p class="eyebrow reveal">The celebrations</p>
+          <h2 class="reveal">Our wedding vows</h2>
+          <p class="chapter-message reveal">With our families’ blessings, we invite you to join us as we begin our forever.</p>
+          <div class="event-details reveal">
+            <div class="event-row"><strong>The date</strong><span>Sunday, 15 November 2026</span></div>
+            <div class="event-row"><strong>The time</strong><span>11:51</span></div>
+            <div class="event-row"><strong>The venue</strong><span>R. N. Shetty Hall, Kundapura</span></div>
+          </div>
+          <p class="signature reveal">With love, Yashas &amp; Nithina</p>
+        </article>
+
+        <nav class="chapter-list" aria-label="Film chapters">
+          <button class="chapter-button" type="button" data-go="0" aria-label="The beginning" aria-current="step"><span>01</span><span>The beginning</span></button>
+          <button class="chapter-button" type="button" data-go="1" aria-label="The blessing"><span>02</span><span>The blessing</span></button>
+          <button class="chapter-button" type="button" data-go="2" aria-label="The light"><span>03</span><span>The light</span></button>
+          <button class="chapter-button" type="button" data-go="3" aria-label="The gathering"><span>04</span><span>The gathering</span></button>
+          <button class="chapter-button" type="button" data-go="4" aria-label="The little joys"><span>05</span><span>The little joys</span></button>
+          <button class="chapter-button" type="button" data-go="5" aria-label="The invitation"><span>06</span><span>The invitation</span></button>
+          <button class="chapter-button" type="button" data-go="6" aria-label="The date"><span>07</span><span>The date</span></button>
+          <button class="chapter-button" type="button" data-go="7" aria-label="The venue"><span>08</span><span>The venue</span></button>
+          <button class="chapter-button" type="button" data-go="8" aria-label="The horizon"><span>09</span><span>The horizon</span></button>
+          <button class="chapter-button" type="button" data-go="9" aria-label="The promise"><span>10</span><span>The promise</span></button>
+          <button class="chapter-button" type="button" data-go="10" aria-label="A new chapter"><span>11</span><span>A new chapter</span></button>
+          <button class="chapter-button" type="button" data-go="11" aria-label="The invitation"><span>12</span><span>The invitation</span></button>
+        </nav>
+        <div class="chapter-label" aria-live="polite"><span class="chapter-number">01</span><span id="chapter-name">The beginning</span></div>
+        <button class="scroll-cue" id="scroll-cue" type="button">Scroll to unfold <span aria-hidden="true">↓</span></button>
+        <div class="film-progress" aria-hidden="true"><span id="progress-fill"></span></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const sheetCount = 152;
+      const framesPerSheet = 8;
+      const frameCount = sheetCount * framesPerSheet;
+      const frameBase = 'https://cdn.riwaaz.in/wedding-websites/themes/rameswaram/frames/desktop/';
+      const chapters = [...document.querySelectorAll('.chapter-copy')];
+      const buttons = [...document.querySelectorAll('.chapter-button')];
+      const image = document.querySelector('#film-image');
+      const stage = document.querySelector('#film-stage');
+      const film = document.querySelector('#film');
+      const chapterName = document.querySelector('#chapter-name');
+      const scrollCue = document.querySelector('#scroll-cue');
+      const loader = document.querySelector('#film-loader');
+      const loaderProgress = document.querySelector('#loader-progress');
+      const loaderPercent = document.querySelector('#loader-percent');
+      const loaderError = document.querySelector('#loader-error');
+      const loaderRetry = document.querySelector('#loader-retry');
+      const chapterLabels = ['The beginning', 'The blessing', 'The light', 'The gathering', 'The little joys', 'The invitation', 'The date', 'The venue', 'The horizon', 'The promise', 'A new chapter', 'The celebrations'];
+      const progressFill = document.querySelector('#progress-fill');
+      const imageCache = new Map();
+      const loadedSheets = new Map();
+      let backgroundWidth = 400;
+      let backgroundHeight = 200;
+      let activeSheet = null;
+      let currentChapter = -1;
+      let rafPending = false;
+      let currentFrame = 0;
+      let currentSheet = 0;
+      let wheelTarget = null;
+      let wheelRaf = 0;
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      if (!window.location.hash) {
+        document.documentElement.style.scrollBehavior = 'auto';
+        window.scrollTo(0, 0);
+        document.documentElement.style.removeProperty('scroll-behavior');
+      }
+
+      const frameUrl = (index) => `${frameBase}${String(index).padStart(3, '0')}.webp?v=cors2`;
+      const loadSheet = (index) => {
+        if (imageCache.has(index)) return imageCache.get(index);
+        const request = new Promise((resolve, reject) => {
+          const sheet = new Image();
+          sheet.decoding = 'async';
+          sheet.onload = () => {
+            const ready = () => {
+              loadedSheets.set(index, sheet);
+              resolve(sheet);
+            };
+            if (typeof sheet.decode === 'function') sheet.decode().then(ready, reject);
+            else ready();
+          };
+          sheet.onerror = () => reject(new Error(`Temple frame ${index} could not be loaded`));
+          sheet.src = frameUrl(index);
+        });
+        imageCache.set(index, request);
+        return request;
+      };
+      const fitSpriteToStage = (sheet) => {
+        activeSheet = sheet;
+        const spriteRatio = sheet.naturalWidth / sheet.naturalHeight;
+        const cellRatio = spriteRatio / 2;
+        const stageRatio = image.clientWidth / image.clientHeight;
+        if (cellRatio > stageRatio) {
+          backgroundWidth = (2 * spriteRatio / stageRatio) * 100;
+          backgroundHeight = 200;
+        } else {
+          backgroundWidth = 400;
+          backgroundHeight = (4 * stageRatio / spriteRatio) * 100;
+        }
+        image.style.backgroundSize = `${backgroundWidth}% ${backgroundHeight}%`;
+      };
+      const positionFrameCell = (frameIndex) => {
+        const cellIndex = frameIndex % framesPerSheet;
+        const column = cellIndex % 4;
+        const row = Math.floor(cellIndex / 4);
+        const cellWidth = backgroundWidth / 4;
+        const cellHeight = backgroundHeight / 2;
+        const x = (column * cellWidth + Math.max(0, (cellWidth - 100) / 2)) / (backgroundWidth - 100) * 100;
+        const y = (row * cellHeight + Math.max(0, (cellHeight - 100) / 2)) / (backgroundHeight - 100) * 100;
+        image.style.backgroundPosition = `${x}% ${y}%`;
+      };
+      const setChapter = (index) => {
+        if (index === currentChapter) return;
+        currentChapter = index;
+        chapters.forEach((chapter, i) => {
+          chapter.classList.toggle('is-current', i === index);
+          chapter.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+        });
+        buttons.forEach((button, i) => {
+          if (i === index) button.setAttribute('aria-current', 'step');
+          else button.removeAttribute('aria-current');
+        });
+        document.querySelector('.chapter-number').textContent = String(index + 1).padStart(2, '0');
+        chapterName.textContent = chapterLabels[index];
+        scrollCue.hidden = index === chapters.length - 1;
+      };
+      const update = () => {
+        rafPending = false;
+        if (document.body.classList.contains('is-loading')) return;
+        const rect = film.getBoundingClientRect();
+        const totalScroll = film.offsetHeight - window.innerHeight;
+        const passed = Math.min(Math.max(-rect.top, 0), totalScroll);
+        const progress = totalScroll > 0 ? passed / totalScroll : 0;
+        const nextFrame = Math.min(frameCount - 1, Math.round(progress * (frameCount - 1)));
+        const nextChapter = Math.min(chapters.length - 1, Math.floor(progress * chapters.length));
+        progressFill.style.transform = `scaleX(${progress})`;
+        stage.classList.toggle('is-opening', progress < .1);
+        setChapter(nextChapter);
+        if (nextFrame !== currentFrame) {
+          currentFrame = nextFrame;
+          const sheetIndex = Math.floor(nextFrame / framesPerSheet);
+          if (sheetIndex !== currentSheet) {
+            const sheet = loadedSheets.get(sheetIndex);
+            if (sheet) {
+              currentSheet = sheetIndex;
+              image.style.backgroundImage = `url("${sheet.src}")`;
+            }
+          }
+          positionFrameCell(nextFrame);
+        }
+        image.style.transform = `scale(${1.025 + progress * .04})`;
+      };
+      const requestUpdate = () => {
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(update);
+      };
+      const stopWheelScroll = () => {
+        if (wheelRaf) cancelAnimationFrame(wheelRaf);
+        wheelRaf = 0;
+        wheelTarget = null;
+        document.documentElement.style.removeProperty('scroll-behavior');
+      };
+      const handleWheel = (event) => {
+        if (event.ctrlKey || event.shiftKey || event.deltaY === 0 || document.body.classList.contains('is-loading')) return;
+        const delta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaMode === 2 ? event.deltaY * window.innerHeight : event.deltaY;
+        const maxScroll = Math.max(0, film.offsetHeight - window.innerHeight);
+        if (!maxScroll) return;
+        event.preventDefault();
+        if (wheelTarget === null) wheelTarget = window.scrollY;
+        wheelTarget = Math.min(maxScroll, Math.max(0, wheelTarget + delta * .70));
+        if (wheelRaf) return;
+        document.documentElement.style.scrollBehavior = 'auto';
+        const easeWheel = () => {
+          const distance = wheelTarget - window.scrollY;
+          if (Math.abs(distance) < .75) {
+            window.scrollTo(0, wheelTarget);
+            wheelRaf = 0;
+            wheelTarget = null;
+            document.documentElement.style.removeProperty('scroll-behavior');
+            requestUpdate();
+            return;
+          }
+          window.scrollTo(0, window.scrollY + distance * .07);
+          wheelRaf = requestAnimationFrame(easeWheel);
+        };
+        wheelRaf = requestAnimationFrame(easeWheel);
+      };
+      const resetFilmPosition = () => {
+        if (window.location.hash) { requestUpdate(); return; }
+        const root = document.documentElement;
+        root.style.scrollBehavior = 'auto';
+        film.scrollIntoView({ block: 'start', behavior: 'instant' });
+        root.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.scrollTo(0, 0);
+        requestAnimationFrame(() => {
+          film.scrollIntoView({ block: 'start', behavior: 'instant' });
+          root.scrollTop = 0;
+          document.body.scrollTop = 0;
+          window.scrollTo(0, 0);
+          requestAnimationFrame(() => {
+            film.scrollIntoView({ block: 'start', behavior: 'instant' });
+            root.scrollTop = 0;
+            document.body.scrollTop = 0;
+            window.scrollTo(0, 0);
+            root.style.removeProperty('scroll-behavior');
+            requestUpdate();
+          });
+        });
+      };
+
+      buttons.forEach((button) => button.addEventListener('click', () => {
+        const index = Number(button.dataset.go);
+        const totalScroll = film.offsetHeight - window.innerHeight;
+        const stageTop = film.getBoundingClientRect().top + window.scrollY;
+        const target = stageTop + totalScroll * ((index + .08) / chapters.length);
+        window.scrollTo({ top: target, behavior: 'smooth' });
+      }));
+      scrollCue.addEventListener('click', () => {
+        if (currentChapter >= chapters.length - 1) return;
+        const totalScroll = film.offsetHeight - window.innerHeight;
+        const stageTop = film.getBoundingClientRect().top + window.scrollY;
+        const target = stageTop + totalScroll * ((currentChapter + 1.08) / chapters.length);
+        window.scrollTo({ top: target, behavior: 'smooth' });
+      });
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('wheel', handleWheel, { passive: false });
+      window.addEventListener('pointerdown', stopWheelScroll, { passive: true });
+      window.addEventListener('keydown', (event) => {
+        if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) stopWheelScroll();
+      }, true);
+      window.addEventListener('resize', () => {
+        if (activeSheet) {
+          fitSpriteToStage(activeSheet);
+          positionFrameCell(currentFrame);
+        }
+        requestUpdate();
+      });
+      const preloadAllFrames = async () => {
+        loaderError.hidden = true;
+        loaderRetry.hidden = true;
+        loaderError.textContent = '';
+        loaderPercent.textContent = '0%';
+        loaderProgress.style.width = '0%';
+        const queue = Array.from({ length: sheetCount }, (_, index) => index);
+        const failed = [];
+        let loadedCount = 0;
+        const worker = async () => {
+          while (queue.length) {
+            const index = queue.shift();
+            let loaded = false;
+            for (let attempt = 0; attempt < 3 && !loaded; attempt += 1) {
+              try {
+                await loadSheet(index);
+                loaded = true;
+              } catch (error) {
+                imageCache.delete(index);
+                if (attempt < 2) await new Promise((resolve) => window.setTimeout(resolve, 350 * (attempt + 1)));
+              }
+            }
+            if (loaded) loadedCount += 1;
+            else failed.push(index);
+            const percent = Math.round(((loadedCount + failed.length) / sheetCount) * 100);
+            loaderProgress.style.width = `${percent}%`;
+            loaderPercent.textContent = `${percent}%`;
+          }
+        };
+        await Promise.all(Array.from({ length: 6 }, () => worker()));
+        if (failed.length) {
+          loaderError.textContent = 'Some scenes could not load. Check your connection and try again.';
+          loaderError.hidden = false;
+          loaderRetry.hidden = false;
+          loaderPercent.textContent = `${loadedCount}/${sheetCount} scenes`;
+          return;
+        }
+        const firstSheet = await loadSheet(0);
+        fitSpriteToStage(firstSheet);
+        image.style.backgroundImage = `url("${firstSheet.src}")`;
+        positionFrameCell(0);
+        currentFrame = 0;
+        currentSheet = 0;
+        image.classList.remove('is-loading');
+        document.body.classList.remove('is-loading');
+        resetFilmPosition();
+        loader.classList.add('is-gone');
+        window.setTimeout(() => {
+          loader.remove();
+          resetFilmPosition();
+        }, 700);
+      };
+      loaderRetry.addEventListener('click', preloadAllFrames);
+      preloadAllFrames();
+      window.addEventListener('pageshow', resetFilmPosition, { once: true });
+    })();
+  </script>
+</body>
+</html>

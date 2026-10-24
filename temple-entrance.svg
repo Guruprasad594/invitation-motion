@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="stone" x2="1" y2=".2"><stop stop-color="#4d4034"/><stop offset=".48" stop-color="#b7a385"/><stop offset="1" stop-color="#40362e"/></linearGradient>
+    <linearGradient id="doorway" x2="0" y2="1"><stop stop-color="#efe7d4"/><stop offset=".48" stop-color="#d7c8aa"/><stop offset="1" stop-color="#766c5d"/></linearGradient>
+    <linearGradient id="floor" x2="0" y2="1"><stop stop-color="#877964"/><stop offset="1" stop-color="#292621"/></linearGradient>
+    <radialGradient id="sunlight"><stop stop-color="#fff9e5" stop-opacity=".98"/><stop offset=".36" stop-color="#eadbb8" stop-opacity=".6"/><stop offset="1" stop-color="#eadbb8" stop-opacity="0"/></radialGradient>
+    <pattern id="grain" width="33" height="33" patternUnits="userSpaceOnUse"><circle cx="4" cy="6" r="1" fill="#fff2d5" opacity=".12"/><circle cx="21" cy="24" r=".8" fill="#251e17" opacity=".17"/></pattern>
+    <g id="pillar">
+      <path d="M0 0h150l-10 34H10Z" fill="#796b56" stroke="#d1bd96" stroke-width="4"/>
+      <path d="M13 34h124l-12 35H25Z" fill="#b7a484" stroke="#5c5042" stroke-width="3"/>
+      <path d="M27 69h96v570H27Z" fill="url(#stone)" stroke="#d0bd96" stroke-width="4"/>
+      <path d="M43 85h64v535H43Z" fill="none" stroke="#594d40" stroke-width="4"/>
+      <path d="M51 118q24-35 48 0t0 67q-24 35-48 0t0-67Zm0 125q24-35 48 0t0 67q-24 35-48 0t0-67Zm0 125q24-35 48 0t0 67q-24 35-48 0t0-67Zm0 125q24-35 48 0t0 67q-24 35-48 0t0-67Z" fill="none" stroke="#d7c5a1" stroke-width="3" opacity=".72"/>
+      <path d="M8 639h134l17 52H-8Zm-17 52h168v36H-9Z" fill="#82745e" stroke="#d0bd96" stroke-width="4"/>
+      <path d="M12 654h126M-4 709h157" stroke="#40382f" stroke-width="5" opacity=".7"/>
+    </g>
+  </defs>
+  <rect width="1080" height="1920" fill="#322d27"/>
+  <path d="M170 0h740l-118 790H288Z" fill="#675c4e"/>
+  <path d="M270 0h540l-87 698H357Z" fill="#392f27" stroke="#c7b48e" stroke-width="14"/>
+  <path d="M365 0h350l-42 620H407Z" fill="url(#doorway)"/>
+  <ellipse cx="540" cy="590" rx="380" ry="440" fill="url(#sunlight)"/>
+  <path d="M0 0h170v1120H0Zm910 0h170v1120H910Z" fill="#514638"/>
+  <path d="M175 0 280 0 352 720 248 850Zm730 0H800L728 720l104 130Z" fill="#9c896b" stroke="#d2c09b" stroke-width="8"/>
+  <path d="M0 0h1080M0 150h1080M0 298h1080M0 454h1080" stroke="#d4c19b" stroke-width="8" opacity=".5"/>
+  <path d="M0 520 1080 520 1080 1920 0 1920Z" fill="url(#floor)"/>
+  <path d="M540 700 0 1920M540 700 1080 1920M540 700 220 1920M540 700 860 1920" stroke="#d9c49c" stroke-width="5" opacity=".34"/>
+  <path d="M0 1050h1080M0 1250h1080M0 1510h1080M0 1780h1080" stroke="#dac8a7" stroke-width="5" opacity=".22"/>
+  <g opacity=".96">
+    <use href="#pillar" transform="translate(-63 610) scale(1.37 1.9)"/>
+    <use href="#pillar" transform="translate(1143 610) scale(-1.37 1.9)"/>
+    <use href="#pillar" transform="translate(190 460) scale(.86 1.4)"/>
+    <use href="#pillar" transform="translate(761 460) scale(.86 1.4)"/>
+    <use href="#pillar" transform="translate(339 330) scale(.5 1.05)"/>
+    <use href="#pillar" transform="translate(666 330) scale(.5 1.05)"/>
+  </g>
+  <g fill="none" stroke="#d8c6a1" stroke-width="5" opacity=".5">
+    <path d="M191 141v260m-24-230h48m-48 56h48m-48 56h48m-48 56h48"/>
+    <path d="M889 141v260m-24-230h48m-48 56h48m-48 56h48m-48 56h48"/>
+    <path d="M0 75q270 220 540 0 270 220 540 0M0 215q270 220 540 0 270 220 540 0"/>
+  </g>
+  <g fill="#f2dfa9" opacity=".85">
+    <circle cx="120" cy="733" r="7"/><circle cx="960" cy="733" r="7"/>
+    <circle cx="242" cy="635" r="5"/><circle cx="838" cy="635" r="5"/>
+  </g>
+  <rect width="1080" height="1920" fill="url(#grain)"/>
+  <rect width="1080" height="1920" fill="#1b1712" opacity=".28"/>
+</svg>

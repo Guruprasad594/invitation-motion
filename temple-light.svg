@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="wall" x2="1"><stop stop-color="#564532"/><stop offset=".5" stop-color="#d2b98a"/><stop offset="1" stop-color="#55442f"/></linearGradient>
+    <linearGradient id="sky" y2="1"><stop stop-color="#eef0e7"/><stop offset=".7" stop-color="#e5d4ae"/><stop offset="1" stop-color="#bb9d67"/></linearGradient>
+    <linearGradient id="stonefloor" y2="1"><stop stop-color="#b09a72"/><stop offset="1" stop-color="#393229"/></linearGradient>
+    <radialGradient id="dawn"><stop stop-color="#fff6d7" stop-opacity=".9"/><stop offset="1" stop-color="#fff6d7" stop-opacity="0"/></radialGradient>
+    <pattern id="grain" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="5" cy="7" r="1" fill="#35281a" opacity=".1"/><circle cx="24" cy="23" r=".8" fill="#fff4da" opacity=".14"/></pattern>
+    <g id="pilaster">
+      <path d="M0 0h138l-11 35H11Z" fill="#d0ba8e" stroke="#594b38" stroke-width="4"/>
+      <path d="M18 35h102v55H18Z" fill="#887351" stroke="#e0cca0" stroke-width="4"/>
+      <path d="M28 90h82v485H28Z" fill="url(#wall)" stroke="#44392c" stroke-width="4"/>
+      <path d="M40 104h58v455H40Z" fill="none" stroke="#e0c99b" stroke-width="4"/>
+      <path d="M44 128q25-31 50 0t0 62q-25 31-50 0t0-62Zm0 113q25-31 50 0t0 62q-25 31-50 0t0-62Zm0 113q25-31 50 0t0 62q-25 31-50 0t0-62Zm0 113q25-31 50 0t0 62q-25 31-50 0t0-62Z" fill="none" stroke="#dac696" stroke-width="4" opacity=".85"/>
+      <path d="M4 575h130l15 43H-11Zm-7 43h146v39H-3Z" fill="#8c7550" stroke="#e0c99b" stroke-width="4"/>
+    </g>
+  </defs>
+  <rect width="1080" height="1920" fill="#756146"/>
+  <path d="M145 0h790l-118 880H263Z" fill="#453a2d" stroke="#d2bd91" stroke-width="12"/>
+  <path d="M276 0h528l-72 770H348Z" fill="url(#sky)"/>
+  <ellipse cx="540" cy="600" rx="420" ry="550" fill="url(#dawn)"/>
+  <path d="M375 760h330v255H375Z" fill="#8e7957" opacity=".6"/>
+  <path d="M430 760v255m110-255v255m110-255v255M375 810h330M375 930h330" stroke="#f2e6cb" stroke-width="8" opacity=".65"/>
+  <path d="M0 905h1080v1015H0Z" fill="url(#stonefloor)"/>
+  <path d="M540 880 0 1920M540 880 1080 1920M540 880 240 1920M540 880 840 1920" stroke="#ead9b5" stroke-width="5" opacity=".43"/>
+  <path d="M0 1100h1080M0 1310h1080M0 1540h1080M0 1780h1080" stroke="#f0dfba" stroke-width="5" opacity=".28"/>
+  <path d="M0 0h150v1040H0Zm930 0h150v1040H930Z" fill="#4d402f"/>
+  <path d="M0 80q260 170 540 0 280 170 540 0M0 220q260 170 540 0 280 170 540 0M0 365q260 170 540 0 280 170 540 0" fill="none" stroke="#d5c092" stroke-width="7" opacity=".58"/>
+  <use href="#pilaster" transform="translate(-48 515) scale(1.24 1.62)"/>
+  <use href="#pilaster" transform="translate(1161 515) scale(-1.24 1.62)"/>
+  <use href="#pilaster" transform="translate(190 430) scale(.84 1.32)"/>
+  <use href="#pilaster" transform="translate(776 430) scale(.84 1.32)"/>
+  <use href="#pilaster" transform="translate(354 340) scale(.48 1.02)"/>
+  <use href="#pilaster" transform="translate(661 340) scale(.48 1.02)"/>
+  <rect width="1080" height="1920" fill="url(#grain)"/>
+  <rect width="1080" height="1920" fill="#21180f" opacity=".18"/>
+</svg>
