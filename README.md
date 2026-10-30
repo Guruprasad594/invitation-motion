@@ -1,6 +1,12 @@
-# Yashas & Nithina wedding invitation
+# Anushree & Balakrishna wedding invitation
 
 This is a static website. It has no build step or package installation.
+
+## Celebration details
+
+- Mehendi: Friday, 13 November 2026
+- Wedding: Sunday, 15 November 2026 at 11:51
+- Wedding venue: R. N. Shetty Hall, Kundapura
 
 ## Deploy to Netlify
 
