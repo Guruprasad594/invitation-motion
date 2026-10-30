@@ -6,7 +6,6 @@
   <meta name="theme-color" content="#14120f">
   <meta name="description" content="Yashas and Nithina invite you to celebrate their wedding in Kundapura on 15 November 2026.">
   <title>Yashas &amp; Nithina — A Wedding in Kundapura</title>
-  <link rel="preconnect" href="https://cdn.riwaaz.in" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -29,16 +28,15 @@
     .skip-link { position: fixed; z-index: 30; top: 12px; left: 12px; padding: 10px 14px; color: #171410; background: var(--cream); transform: translateY(-150%); }
     .skip-link:focus { transform: translateY(0); }
 
-    /* The long scroll is the film: each step advances to another real frame. */
+    /* The long scroll seeks the bundled temple film in either direction. */
     .film-scroll { position: relative; height: 16000svh; }
-    .film-stage { position: sticky; top: 0; width: 100%; height: 100svh; min-height: 480px; overflow: hidden; isolation: isolate; background: #d8d7d2 url("https://cdn.riwaaz.in/wedding-websites/themes/rameswaram/poster.jpg") center / cover; }
+    .film-stage { position: sticky; top: 0; width: 100%; height: 100svh; min-height: 480px; overflow: hidden; isolation: isolate; background: #14120f url("assets/temple-poster.jpg") center / cover; }
     .film-stage.is-opening { --cream: #f7f0e4; --soft: rgba(247,240,228,.84); --gold: #d9c08a; }
     .film-stage.is-opening .film-shade { opacity: 1; background: linear-gradient(180deg, rgba(13,12,10,0) 26%, rgba(13,12,10,.16) 46%, rgba(12,10,8,.7) 100%); }
     .film-stage.is-opening .brand, .film-stage.is-opening .top-date { color: rgba(247,240,228,.9); }
     .film-stage.is-opening .chapter-label, .film-stage.is-opening .scroll-cue { color: rgba(247,240,228,.84); }
-    .film-image, .film-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
-    .film-image { z-index: -2; background-repeat: no-repeat; background-size: 400% 200%; background-position: 0 0; transform: scale(1.025); will-change: transform; }
-    .film-image.is-loading { opacity: .45; }
+    .film-video, .film-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .film-video { z-index: -2; display: block; object-fit: cover; object-position: center; transform: scale(1.025); will-change: transform; }
     .film-shade { z-index: -1; pointer-events: none; background: linear-gradient(180deg, rgba(13,12,10,.015) 0%, rgba(13,12,10,.025) 47%, rgba(12,10,8,.22) 100%); }
     .film-stage::after { position: absolute; inset: 0; z-index: -1; pointer-events: none; content: ""; border: 1px solid rgba(255,255,255,.035); }
     .masthead { position: absolute; z-index: 5; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 25px clamp(22px, 4vw, 62px); color: var(--cream); text-shadow: 0 2px 20px rgba(0,0,0,.18); }
@@ -110,7 +108,7 @@
     @media (max-width: 600px) {
       .film-scroll { height: 16000svh; }
       .film-stage { min-height: 540px; }
-      .film-image { object-position: center; }
+      .film-video { object-position: center; }
       .masthead { padding: 18px 19px; }
       .brand { max-width: 55%; font-size: 7px; letter-spacing: .17em; }
       .chapter-copy { top: 65%; width: calc(100% - 52px); }
@@ -157,7 +155,7 @@
   <main>
     <section class="film-scroll" id="film" aria-label="A cinematic journey through the temple">
       <div class="film-stage" id="film-stage">
-        <div class="film-image" id="film-image" role="img" aria-label="A carved temple journey from the entrance through pillared corridors to an arch overlooking the sea"></div>
+        <video class="film-video" id="film-video" muted playsinline preload="auto" poster="assets/temple-poster.jpg" aria-hidden="true"></video>
         <div class="film-shade" aria-hidden="true"></div>
         <header class="masthead">
           <span class="top-date">The celebrations &nbsp;↗</span>
@@ -265,13 +263,9 @@
 
   <script>
     (() => {
-      const sheetCount = 152;
-      const framesPerSheet = 8;
-      const frameCount = sheetCount * framesPerSheet;
-      const frameBase = 'https://cdn.riwaaz.in/wedding-websites/themes/rameswaram/frames/desktop/';
       const chapters = [...document.querySelectorAll('.chapter-copy')];
       const buttons = [...document.querySelectorAll('.chapter-button')];
-      const image = document.querySelector('#film-image');
+      const video = document.querySelector('#film-video');
       const stage = document.querySelector('#film-stage');
       const film = document.querySelector('#film');
       const chapterName = document.querySelector('#chapter-name');
@@ -283,141 +277,36 @@
       const loaderRetry = document.querySelector('#loader-retry');
       const chapterLabels = ['The beginning', 'The blessing', 'The light', 'The gathering', 'The little joys', 'The invitation', 'The date', 'The venue', 'The horizon', 'The promise', 'A new chapter', 'The celebrations'];
       const progressFill = document.querySelector('#progress-fill');
-      const imageCache = new Map();
-      const loadedSheets = new Map();
-      let backgroundWidth = 400;
-      let backgroundHeight = 200;
-      let activeSheet = null;
-      let currentChapter = -1;
-      let rafPending = false;
-      let currentFrame = 0;
-      let currentSheet = 0;
-      let wheelTarget = null;
       const autoplayToggle = document.querySelector('#autoplay-toggle');
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const autoplayDuration = 40000;
+      let currentChapter = -1;
+      let rafPending = false;
+      let wheelTarget = null;
+      let wheelRaf = 0;
       let autoplayFrame = 0;
       let autoplayTimer = 0;
-      let autoplayLastTime = 0;
-      let autoplayStartProgress = 0;
-      let autoplayProgress = null;
       let autoplayPageTop = 0;
       let autoplayPageDistance = 0;
+      let autoplayProgress = null;
       let autoplayScheduled = false;
       let autoplayRunning = false;
+      let filmReady = false;
+
+      video.src = 'assets/temple-film.mp4?v=20261031-chapter-scenes';
+      video.muted = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+
       const updateAutoplayButton = () => {
         const active = autoplayScheduled || autoplayRunning;
         autoplayToggle.textContent = active ? 'Pause journey' : 'Play journey';
         autoplayToggle.setAttribute('aria-pressed', String(active));
         autoplayToggle.setAttribute('aria-label', active ? 'Pause automatic invitation scroll' : 'Play invitation automatically');
       };
-      const pauseAutoplay = (syncToPage = false) => {
-        if (autoplayTimer) window.clearTimeout(autoplayTimer);
-        if (autoplayFrame) cancelAnimationFrame(autoplayFrame);
-        autoplayTimer = 0;
-        autoplayFrame = 0;
-        autoplayLastTime = 0;
-        autoplayScheduled = false;
-        autoplayRunning = false;
-        if (syncToPage && autoplayProgress !== null) {
-          const stageTop = film.getBoundingClientRect().top + window.scrollY;
-          const totalScroll = Math.max(0, film.offsetHeight - window.innerHeight);
-          window.scrollTo(0, stageTop + totalScroll * autoplayProgress);
-          autoplayProgress = null;
-          requestUpdate();
-        }
-        document.documentElement.style.removeProperty('scroll-behavior');
-        updateAutoplayButton();
-      };
-      const autoplayStep = (time) => {
-        if (!autoplayRunning) return;
-        if (!autoplayLastTime) autoplayLastTime = time;
-        const elapsed = time - autoplayLastTime;
-        autoplayProgress = Math.min(1, autoplayStartProgress + (elapsed / autoplayDuration) * (1 - autoplayStartProgress));
-        window.scrollTo(0, autoplayPageTop + autoplayPageDistance * autoplayProgress);
-        update();
-        if (autoplayProgress >= 1) {
-          pauseAutoplay();
-          return;
-        }
-        autoplayFrame = requestAnimationFrame(autoplayStep);
-      };
-      const startAutoplay = () => {
-        if (autoplayTimer) window.clearTimeout(autoplayTimer);
-        autoplayTimer = 0;
-        autoplayScheduled = false;
-        const stageTop = film.getBoundingClientRect().top + window.scrollY;
+      const getScrollProgress = () => {
         const totalScroll = Math.max(1, film.offsetHeight - window.innerHeight);
-        autoplayPageTop = stageTop;
-        autoplayPageDistance = totalScroll;
-        document.documentElement.style.scrollBehavior = 'auto';
-        const currentProgress = autoplayProgress === null
-          ? Math.min(1, Math.max(0, (window.scrollY - stageTop) / totalScroll))
-          : autoplayProgress;
-        autoplayStartProgress = currentProgress >= 1 ? 0 : currentProgress;
-        autoplayProgress = autoplayStartProgress;
-        if (currentProgress >= 1) window.scrollTo(0, stageTop);
-        autoplayRunning = true;
-        autoplayLastTime = 0;
-        updateAutoplayButton();
-        update();
-        autoplayFrame = requestAnimationFrame(autoplayStep);
-      };
-      autoplayToggle.addEventListener('click', () => {
-        if (autoplayScheduled || autoplayRunning) pauseAutoplay(true);
-        else startAutoplay();
-      });
-      let wheelRaf = 0;
-      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-      if (!window.location.hash) {
-        document.documentElement.style.scrollBehavior = 'auto';
-        window.scrollTo(0, 0);
-        document.documentElement.style.removeProperty('scroll-behavior');
-      }
-
-      const frameUrl = (index) => `${frameBase}${String(index).padStart(3, '0')}.webp?v=cors2`;
-      const loadSheet = (index) => {
-        if (imageCache.has(index)) return imageCache.get(index);
-        const request = new Promise((resolve, reject) => {
-          const sheet = new Image();
-          sheet.decoding = 'async';
-          sheet.onload = () => {
-            const ready = () => {
-              loadedSheets.set(index, sheet);
-              resolve(sheet);
-            };
-            if (typeof sheet.decode === 'function') sheet.decode().then(ready, reject);
-            else ready();
-          };
-          sheet.onerror = () => reject(new Error(`Temple frame ${index} could not be loaded`));
-          sheet.src = frameUrl(index);
-        });
-        imageCache.set(index, request);
-        return request;
-      };
-      const fitSpriteToStage = (sheet) => {
-        activeSheet = sheet;
-        const spriteRatio = sheet.naturalWidth / sheet.naturalHeight;
-        const cellRatio = spriteRatio / 2;
-        const stageRatio = image.clientWidth / image.clientHeight;
-        if (cellRatio > stageRatio) {
-          backgroundWidth = (2 * spriteRatio / stageRatio) * 100;
-          backgroundHeight = 200;
-        } else {
-          backgroundWidth = 400;
-          backgroundHeight = (4 * stageRatio / spriteRatio) * 100;
-        }
-        image.style.backgroundSize = `${backgroundWidth}% ${backgroundHeight}%`;
-      };
-      const positionFrameCell = (frameIndex) => {
-        const cellIndex = frameIndex % framesPerSheet;
-        const column = cellIndex % 4;
-        const row = Math.floor(cellIndex / 4);
-        const cellWidth = backgroundWidth / 4;
-        const cellHeight = backgroundHeight / 2;
-        const x = (column * cellWidth + Math.max(0, (cellWidth - 100) / 2)) / (backgroundWidth - 100) * 100;
-        const y = (row * cellHeight + Math.max(0, (cellHeight - 100) / 2)) / (backgroundHeight - 100) * 100;
-        image.style.backgroundPosition = `${x}% ${y}%`;
+        const passed = Math.max(0, -film.getBoundingClientRect().top);
+        return Math.min(1, passed / totalScroll);
       };
       const setChapter = (index) => {
         if (index === currentChapter) return;
@@ -434,40 +323,114 @@
         chapterName.textContent = chapterLabels[index];
         scrollCue.hidden = index === chapters.length - 1;
       };
+      const seekVideo = (progress) => {
+        if (!filmReady || !video.duration || video.seeking || autoplayRunning) return;
+        const target = Math.min(Math.max(0, progress * video.duration), Math.max(0, video.duration - .04));
+        if (Math.abs(video.currentTime - target) > .05) video.currentTime = target;
+      };
       const update = () => {
         rafPending = false;
         if (document.body.classList.contains('is-loading')) return;
-        let progress = autoplayProgress;
-        if (progress === null) {
-          const rect = film.getBoundingClientRect();
-          const totalScroll = film.offsetHeight - window.innerHeight;
-          const passed = Math.min(Math.max(-rect.top, 0), totalScroll);
-          progress = totalScroll > 0 ? passed / totalScroll : 0;
-        }
-        const nextFrame = Math.min(frameCount - 1, Math.round(progress * (frameCount - 1)));
+        const progress = autoplayProgress === null ? getScrollProgress() : autoplayProgress;
         const nextChapter = Math.min(chapters.length - 1, Math.floor(progress * chapters.length));
-        progressFill.style.transform = `scaleX(${progress})`;
+        progressFill.style.transform = 'scaleX(' + progress + ')';
         stage.classList.toggle('is-opening', progress < .1);
         setChapter(nextChapter);
-        if (nextFrame !== currentFrame) {
-          currentFrame = nextFrame;
-          const sheetIndex = Math.floor(nextFrame / framesPerSheet);
-          if (sheetIndex !== currentSheet) {
-            const sheet = loadedSheets.get(sheetIndex);
-            if (sheet) {
-              currentSheet = sheetIndex;
-              image.style.backgroundImage = `url("${sheet.src}")`;
-            }
-          }
-          positionFrameCell(nextFrame);
-        }
-        image.style.transform = `scale(${1.025 + progress * .04})`;
+        seekVideo(progress);
+        video.style.transform = 'scale(' + (1.025 + progress * .04) + ')';
       };
       const requestUpdate = () => {
         if (rafPending) return;
         rafPending = true;
         requestAnimationFrame(update);
       };
+      const pauseAutoplay = (syncToPage = false) => {
+        if (autoplayTimer) window.clearTimeout(autoplayTimer);
+        if (autoplayFrame) cancelAnimationFrame(autoplayFrame);
+        autoplayTimer = 0;
+        autoplayFrame = 0;
+        autoplayScheduled = false;
+        autoplayRunning = false;
+        video.pause();
+        video.playbackRate = 1;
+        if (syncToPage && autoplayProgress !== null) {
+          window.scrollTo(0, autoplayPageTop + autoplayPageDistance * autoplayProgress);
+          autoplayProgress = null;
+          requestUpdate();
+        }
+        document.documentElement.style.removeProperty('scroll-behavior');
+        updateAutoplayButton();
+      };
+      const autoplayRateAt = (progress) => {
+        const chapterPosition = progress * chapters.length;
+        const sectionStart = 4;
+        const sectionEnd = 6;
+        const ramp = .2;
+        const intensity = chapterPosition < sectionStart || chapterPosition >= sectionEnd
+          ? 0
+          : Math.min(1, (chapterPosition - sectionStart) / ramp, (sectionEnd - chapterPosition) / ramp);
+        return 1 + intensity * .25;
+      };
+      const autoplayStep = () => {
+        if (!autoplayRunning || !video.duration) return;
+        const progress = Math.min(1, video.currentTime / video.duration);
+        const playbackRate = autoplayRateAt(progress);
+        if (Math.abs(video.playbackRate - playbackRate) > .01) video.playbackRate = playbackRate;
+        autoplayProgress = progress;
+        window.scrollTo(0, autoplayPageTop + autoplayPageDistance * progress);
+        update();
+        if (video.ended || progress >= .999) {
+          autoplayProgress = 1;
+          window.scrollTo(0, autoplayPageTop + autoplayPageDistance);
+          update();
+          pauseAutoplay();
+          return;
+        }
+        autoplayFrame = requestAnimationFrame(autoplayStep);
+      };
+      const startAutoplay = () => {
+        if (!filmReady || !video.duration) return;
+        if (autoplayTimer) window.clearTimeout(autoplayTimer);
+        autoplayTimer = 0;
+        autoplayScheduled = false;
+        const stageTop = film.getBoundingClientRect().top + window.scrollY;
+        const totalScroll = Math.max(1, film.offsetHeight - window.innerHeight);
+        autoplayPageTop = stageTop;
+        autoplayPageDistance = totalScroll;
+        document.documentElement.style.scrollBehavior = 'auto';
+        let progress = autoplayProgress === null ? getScrollProgress() : autoplayProgress;
+        if (progress >= 1) {
+          progress = 0;
+          window.scrollTo(0, stageTop);
+        }
+        autoplayProgress = progress;
+        video.pause();
+        video.playbackRate = autoplayRateAt(progress);
+        video.currentTime = Math.min(progress * video.duration, Math.max(0, video.duration - .04));
+        autoplayRunning = true;
+        updateAutoplayButton();
+        update();
+        const playRequest = video.play();
+        if (playRequest && typeof playRequest.then === 'function') {
+          playRequest.then(() => {
+            if (autoplayRunning) autoplayFrame = requestAnimationFrame(autoplayStep);
+          }).catch(() => pauseAutoplay());
+        } else {
+          autoplayFrame = requestAnimationFrame(autoplayStep);
+        }
+      };
+      autoplayToggle.addEventListener('click', () => {
+        if (autoplayScheduled || autoplayRunning) pauseAutoplay(true);
+        else startAutoplay();
+      });
+
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      if (!window.location.hash) {
+        document.documentElement.style.scrollBehavior = 'auto';
+        window.scrollTo(0, 0);
+        document.documentElement.style.removeProperty('scroll-behavior');
+      }
+
       const stopWheelScroll = () => {
         if (wheelRaf) cancelAnimationFrame(wheelRaf);
         wheelRaf = 0;
@@ -517,18 +480,13 @@
           root.scrollTop = 0;
           document.body.scrollTop = 0;
           window.scrollTo(0, 0);
-          requestAnimationFrame(() => {
-            film.scrollIntoView({ block: 'start', behavior: 'instant' });
-            root.scrollTop = 0;
-            document.body.scrollTop = 0;
-            window.scrollTo(0, 0);
-            root.style.removeProperty('scroll-behavior');
-            requestUpdate();
-          });
+          root.style.removeProperty('scroll-behavior');
+          requestUpdate();
         });
       };
 
       buttons.forEach((button) => button.addEventListener('click', () => {
+        pauseAutoplay(true);
         const index = Number(button.dataset.go);
         const totalScroll = film.offsetHeight - window.innerHeight;
         const stageTop = film.getBoundingClientRect().top + window.scrollY;
@@ -536,6 +494,7 @@
         window.scrollTo({ top: target, behavior: 'smooth' });
       }));
       scrollCue.addEventListener('click', () => {
+        pauseAutoplay(true);
         if (currentChapter >= chapters.length - 1) return;
         const totalScroll = film.offsetHeight - window.innerHeight;
         const stageTop = film.getBoundingClientRect().top + window.scrollY;
@@ -550,57 +509,29 @@
       window.addEventListener('keydown', (event) => {
         if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) stopForManualInput(event);
       }, true);
-      window.addEventListener('resize', () => {
-        if (activeSheet) {
-          fitSpriteToStage(activeSheet);
-          positionFrameCell(currentFrame);
-        }
-        requestUpdate();
-      });
-      const preloadAllFrames = async () => {
-        loaderError.hidden = true;
-        loaderRetry.hidden = true;
-        loaderError.textContent = '';
-        loaderPercent.textContent = '0%';
-        loaderProgress.style.width = '0%';
-        const queue = Array.from({ length: sheetCount }, (_, index) => index);
-        const failed = [];
-        let loadedCount = 0;
-        const worker = async () => {
-          while (queue.length) {
-            const index = queue.shift();
-            let loaded = false;
-            for (let attempt = 0; attempt < 3 && !loaded; attempt += 1) {
-              try {
-                await loadSheet(index);
-                loaded = true;
-              } catch (error) {
-                imageCache.delete(index);
-                if (attempt < 2) await new Promise((resolve) => window.setTimeout(resolve, 350 * (attempt + 1)));
-              }
-            }
-            if (loaded) loadedCount += 1;
-            else failed.push(index);
-            const percent = Math.round(((loadedCount + failed.length) / sheetCount) * 100);
-            loaderProgress.style.width = `${percent}%`;
-            loaderPercent.textContent = `${percent}%`;
-          }
-        };
-        await Promise.all(Array.from({ length: 6 }, () => worker()));
-        if (failed.length) {
-          loaderError.textContent = 'Some scenes could not load. Check your connection and try again.';
-          loaderError.hidden = false;
-          loaderRetry.hidden = false;
-          loaderPercent.textContent = `${loadedCount}/${sheetCount} scenes`;
-          return;
-        }
-        const firstSheet = await loadSheet(0);
-        fitSpriteToStage(firstSheet);
-        image.style.backgroundImage = `url("${firstSheet.src}")`;
-        positionFrameCell(0);
-        currentFrame = 0;
-        currentSheet = 0;
-        image.classList.remove('is-loading');
+      video.addEventListener('seeked', requestUpdate);
+      window.addEventListener('resize', requestUpdate);
+
+      const updateLoader = () => {
+        if (!video.duration || !video.buffered.length || filmReady) return;
+        const bufferedTo = video.buffered.end(video.buffered.length - 1);
+        const percent = Math.min(99, Math.round((bufferedTo / video.duration) * 100));
+        loaderProgress.style.width = percent + '%';
+        loaderPercent.textContent = percent + '%';
+      };
+      const showVideoError = () => {
+        if (filmReady) return;
+        loaderError.textContent = 'The wedding film could not be loaded. Check your connection and try again.';
+        loaderError.hidden = false;
+        loaderRetry.hidden = false;
+      };
+      const revealFilm = () => {
+        if (filmReady || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) return;
+        filmReady = true;
+        video.pause();
+        video.currentTime = 0;
+        loaderProgress.style.width = '100%';
+        loaderPercent.textContent = '100%';
         document.body.classList.remove('is-loading');
         resetFilmPosition();
         loader.classList.add('is-gone');
@@ -614,8 +545,15 @@
           autoplayTimer = window.setTimeout(startAutoplay, 5000);
         }
       };
-      loaderRetry.addEventListener('click', preloadAllFrames);
-      preloadAllFrames();
+      video.addEventListener('progress', updateLoader);
+      video.addEventListener('canplaythrough', revealFilm);
+      video.addEventListener('error', showVideoError);
+      loaderRetry.addEventListener('click', () => {
+        loaderError.hidden = true;
+        loaderRetry.hidden = true;
+        video.load();
+      });
+      video.load();
       window.addEventListener('pageshow', resetFilmPosition, { once: true });
     })();
   </script>

@@ -10,4 +10,4 @@ This is a static website. It has no build step or package installation.
 
 The root `netlify.toml` already sets the publish directory. The main page is `index.html`.
 
-The cinematic film currently loads its 152 temple image sheets from the Riwaaz CDN, and its fonts from Google Fonts. Visitors need an internet connection, and those external services must continue to serve the assets.
+The temple film is bundled locally as `assets/temple-film.mp4`, with `assets/temple-poster.jpg` as its poster. The fonts load from Google Fonts and fall back to system fonts if that service is unavailable.
