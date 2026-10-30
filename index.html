@@ -84,6 +84,8 @@
 
     .chapter-label, .scroll-cue { position: absolute; z-index: 5; bottom: 28px; display: flex; align-items: center; gap: 9px; color: rgba(247,240,228,.84); font-size: 8px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; text-shadow: 0 2px 18px rgba(0,0,0,.48); }
     .chapter-label { left: clamp(22px, 4vw, 60px); }
+    .autoplay-toggle { position: absolute; z-index: 7; right: clamp(22px, 4vw, 60px); bottom: 66px; padding: 10px 13px; border: 1px solid rgba(247,240,228,.34); border-radius: 999px; color: rgba(247,240,228,.88); background: rgba(20,19,17,.22); backdrop-filter: blur(8px); font: 600 8px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: background .2s ease, border-color .2s ease; }
+    .autoplay-toggle:hover { border-color: var(--gold); background: rgba(20,19,17,.45); }
     .chapter-label .chapter-number { color: var(--gold); }
     .scroll-cue { right: clamp(22px, 4vw, 60px); padding: 0; border: 0; background: transparent; cursor: pointer; }
     .scroll-cue[hidden] { display: none; }
@@ -254,6 +256,7 @@
           <button class="chapter-button" type="button" data-go="11" aria-label="The invitation"><span>12</span><span>The invitation</span></button>
         </nav>
         <div class="chapter-label" aria-live="polite"><span class="chapter-number">01</span><span id="chapter-name">The beginning</span></div>
+        <button class="autoplay-toggle" id="autoplay-toggle" type="button" aria-pressed="false">Play journey</button>
         <button class="scroll-cue" id="scroll-cue" type="button">Scroll to unfold <span aria-hidden="true">↓</span></button>
         <div class="film-progress" aria-hidden="true"><span id="progress-fill"></span></div>
       </div>
@@ -290,6 +293,73 @@
       let currentFrame = 0;
       let currentSheet = 0;
       let wheelTarget = null;
+      const autoplayToggle = document.querySelector('#autoplay-toggle');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const autoplayDuration = 50000;
+      let autoplayFrame = 0;
+      let autoplayTimer = 0;
+      let autoplayLastTime = 0;
+      let autoplayStartProgress = 0;
+      let autoplayProgress = null;
+      let autoplayScheduled = false;
+      let autoplayRunning = false;
+      const updateAutoplayButton = () => {
+        const active = autoplayScheduled || autoplayRunning;
+        autoplayToggle.textContent = active ? 'Pause journey' : 'Play journey';
+        autoplayToggle.setAttribute('aria-pressed', String(active));
+        autoplayToggle.setAttribute('aria-label', active ? 'Pause automatic invitation scroll' : 'Play invitation automatically');
+      };
+      const pauseAutoplay = (syncToPage = false) => {
+        if (autoplayTimer) window.clearTimeout(autoplayTimer);
+        if (autoplayFrame) cancelAnimationFrame(autoplayFrame);
+        autoplayTimer = 0;
+        autoplayFrame = 0;
+        autoplayLastTime = 0;
+        autoplayScheduled = false;
+        autoplayRunning = false;
+        if (syncToPage && autoplayProgress !== null) {
+          const stageTop = film.getBoundingClientRect().top + window.scrollY;
+          const totalScroll = Math.max(0, film.offsetHeight - window.innerHeight);
+          window.scrollTo(0, stageTop + totalScroll * autoplayProgress);
+          autoplayProgress = null;
+          requestUpdate();
+        }
+        updateAutoplayButton();
+      };
+      const autoplayStep = (time) => {
+        if (!autoplayRunning) return;
+        if (!autoplayLastTime) autoplayLastTime = time;
+        const elapsed = time - autoplayLastTime;
+        autoplayProgress = Math.min(1, autoplayStartProgress + (elapsed / autoplayDuration) * (1 - autoplayStartProgress));
+        update();
+        if (autoplayProgress >= 1) {
+          pauseAutoplay();
+          return;
+        }
+        autoplayFrame = requestAnimationFrame(autoplayStep);
+      };
+      const startAutoplay = () => {
+        if (autoplayTimer) window.clearTimeout(autoplayTimer);
+        autoplayTimer = 0;
+        autoplayScheduled = false;
+        const stageTop = film.getBoundingClientRect().top + window.scrollY;
+        const totalScroll = Math.max(1, film.offsetHeight - window.innerHeight);
+        const currentProgress = autoplayProgress === null
+          ? Math.min(1, Math.max(0, (window.scrollY - stageTop) / totalScroll))
+          : autoplayProgress;
+        autoplayStartProgress = currentProgress >= 1 ? 0 : currentProgress;
+        autoplayProgress = autoplayStartProgress;
+        if (currentProgress >= 1) window.scrollTo(0, stageTop);
+        autoplayRunning = true;
+        autoplayLastTime = 0;
+        updateAutoplayButton();
+        update();
+        autoplayFrame = requestAnimationFrame(autoplayStep);
+      };
+      autoplayToggle.addEventListener('click', () => {
+        if (autoplayScheduled || autoplayRunning) pauseAutoplay(true);
+        else startAutoplay();
+      });
       let wheelRaf = 0;
       if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
       if (!window.location.hash) {
@@ -360,10 +430,13 @@
       const update = () => {
         rafPending = false;
         if (document.body.classList.contains('is-loading')) return;
-        const rect = film.getBoundingClientRect();
-        const totalScroll = film.offsetHeight - window.innerHeight;
-        const passed = Math.min(Math.max(-rect.top, 0), totalScroll);
-        const progress = totalScroll > 0 ? passed / totalScroll : 0;
+        let progress = autoplayProgress;
+        if (progress === null) {
+          const rect = film.getBoundingClientRect();
+          const totalScroll = film.offsetHeight - window.innerHeight;
+          const passed = Math.min(Math.max(-rect.top, 0), totalScroll);
+          progress = totalScroll > 0 ? passed / totalScroll : 0;
+        }
         const nextFrame = Math.min(frameCount - 1, Math.round(progress * (frameCount - 1)));
         const nextChapter = Math.min(chapters.length - 1, Math.floor(progress * chapters.length));
         progressFill.style.transform = `scaleX(${progress})`;
@@ -394,8 +467,13 @@
         wheelTarget = null;
         document.documentElement.style.removeProperty('scroll-behavior');
       };
+      const stopForManualInput = (event) => {
+        stopWheelScroll();
+        if (event.target !== autoplayToggle) pauseAutoplay(true);
+      };
       const handleWheel = (event) => {
         if (event.ctrlKey || event.shiftKey || event.deltaY === 0 || document.body.classList.contains('is-loading')) return;
+        pauseAutoplay(true);
         const delta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaMode === 2 ? event.deltaY * window.innerHeight : event.deltaY;
         const maxScroll = Math.max(0, film.offsetHeight - window.innerHeight);
         if (!maxScroll) return;
@@ -459,9 +537,9 @@
       });
       window.addEventListener('scroll', requestUpdate, { passive: true });
       window.addEventListener('wheel', handleWheel, { passive: false });
-      window.addEventListener('pointerdown', stopWheelScroll, { passive: true });
+      window.addEventListener('pointerdown', stopForManualInput, { passive: true });
       window.addEventListener('keydown', (event) => {
-        if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) stopWheelScroll();
+        if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) stopForManualInput(event);
       }, true);
       window.addEventListener('resize', () => {
         if (activeSheet) {
@@ -521,6 +599,11 @@
           loader.remove();
           resetFilmPosition();
         }, 700);
+        if (!window.location.hash && !reduceMotion.matches) {
+          autoplayScheduled = true;
+          updateAutoplayButton();
+          autoplayTimer = window.setTimeout(startAutoplay, 5000);
+        }
       };
       loaderRetry.addEventListener('click', preloadAllFrames);
       preloadAllFrames();
