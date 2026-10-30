@@ -301,6 +301,8 @@
       let autoplayLastTime = 0;
       let autoplayStartProgress = 0;
       let autoplayProgress = null;
+      let autoplayPageTop = 0;
+      let autoplayPageDistance = 0;
       let autoplayScheduled = false;
       let autoplayRunning = false;
       const updateAutoplayButton = () => {
@@ -324,6 +326,7 @@
           autoplayProgress = null;
           requestUpdate();
         }
+        document.documentElement.style.removeProperty('scroll-behavior');
         updateAutoplayButton();
       };
       const autoplayStep = (time) => {
@@ -331,6 +334,7 @@
         if (!autoplayLastTime) autoplayLastTime = time;
         const elapsed = time - autoplayLastTime;
         autoplayProgress = Math.min(1, autoplayStartProgress + (elapsed / autoplayDuration) * (1 - autoplayStartProgress));
+        window.scrollTo(0, autoplayPageTop + autoplayPageDistance * autoplayProgress);
         update();
         if (autoplayProgress >= 1) {
           pauseAutoplay();
@@ -344,6 +348,9 @@
         autoplayScheduled = false;
         const stageTop = film.getBoundingClientRect().top + window.scrollY;
         const totalScroll = Math.max(1, film.offsetHeight - window.innerHeight);
+        autoplayPageTop = stageTop;
+        autoplayPageDistance = totalScroll;
+        document.documentElement.style.scrollBehavior = 'auto';
         const currentProgress = autoplayProgress === null
           ? Math.min(1, Math.max(0, (window.scrollY - stageTop) / totalScroll))
           : autoplayProgress;
@@ -535,7 +542,9 @@
         const target = stageTop + totalScroll * ((currentChapter + 1.08) / chapters.length);
         window.scrollTo({ top: target, behavior: 'smooth' });
       });
-      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('scroll', () => {
+        if (autoplayProgress === null) requestUpdate();
+      }, { passive: true });
       window.addEventListener('wheel', handleWheel, { passive: false });
       window.addEventListener('pointerdown', stopForManualInput, { passive: true });
       window.addEventListener('keydown', (event) => {
