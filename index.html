@@ -84,9 +84,14 @@
     .chapter-label { left: clamp(22px, 4vw, 60px); }
     .autoplay-toggle { position: absolute; z-index: 7; right: clamp(22px, 4vw, 60px); bottom: 66px; padding: 10px 13px; border: 1px solid rgba(247,240,228,.34); border-radius: 999px; color: rgba(247,240,228,.88); background: rgba(20,19,17,.22); backdrop-filter: blur(8px); font: 600 8px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: background .2s ease, border-color .2s ease; }
     .autoplay-toggle:hover { border-color: var(--gold); background: rgba(20,19,17,.45); }
-    .music-toggle { position: absolute; z-index: 7; top: 68px; right: clamp(22px, 4vw, 60px); padding: 10px 13px; border: 1px solid rgba(247,240,228,.34); border-radius: 999px; color: rgba(247,240,228,.88); background: rgba(20,19,17,.28); backdrop-filter: blur(8px); font: 600 8px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: background .2s ease, border-color .2s ease; }
-    .music-toggle::before { margin-right: 7px; color: var(--gold); content: "♫"; font-size: 12px; }
-    .music-toggle:hover, .music-toggle[aria-pressed="true"] { border-color: var(--gold); background: rgba(20,19,17,.48); }
+    body.is-start-gated { overflow: hidden; }
+    .journey-gate { position: fixed; z-index: 45; inset: 0; display: grid; place-items: center; padding: 24px; background: rgba(20,18,15,.42); backdrop-filter: blur(3px); text-align: center; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .55s ease, visibility .55s ease; }
+    .journey-gate.is-visible { opacity: 1; visibility: visible; pointer-events: auto; }
+    .journey-gate-card { width: min(560px, 100%); padding: clamp(28px, 6vw, 54px); border: 1px solid rgba(217,192,138,.55); background: rgba(20,18,15,.66); box-shadow: 0 18px 80px rgba(0,0,0,.2); }
+    .journey-gate-title { margin: 0; color: var(--cream); font: 400 clamp(37px, 7vw, 64px)/.98 var(--serif); letter-spacing: -.035em; }
+    .journey-gate-copy { margin: 20px 0 26px; color: var(--soft); font: 17px/1.5 var(--serif); }
+    .journey-start { padding: 14px 24px; border: 1px solid var(--gold); color: #17140e; background: var(--gold); font: 600 9px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; cursor: pointer; transition: background .2s ease, color .2s ease; }
+    .journey-start:hover { color: var(--cream); background: transparent; }
     .chapter-label .chapter-number { color: var(--gold); }
     .scroll-cue { right: clamp(22px, 4vw, 60px); padding: 0; border: 0; background: transparent; cursor: pointer; }
     .scroll-cue[hidden] { display: none; }
@@ -137,7 +142,6 @@
       .chapter-button span:first-child { display: block; font-size: 6px; }
       .chapter-label { bottom: 31px; left: 19px; max-width: calc(100% - 175px); font-size: 7px; }
       .scroll-cue { right: 19px; bottom: 70px; font-size: 7px; }
-      .music-toggle { top: 55px; right: 19px; padding: 9px 11px; font-size: 7px; }
       .top-date { font-size: 7px; letter-spacing: .13em; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -156,11 +160,19 @@
     <p class="loader-error" id="loader-error" hidden></p>
     <button class="loader-retry" id="loader-retry" type="button" hidden>Try loading again</button>
   </div>
-  <main>
+  <section class="journey-gate" id="journey-gate" role="dialog" aria-modal="true" aria-labelledby="journey-gate-title" aria-hidden="true">
+    <div class="journey-gate-card">
+      <p class="loader-copy">Anushree &amp; Balakrishna</p>
+      <h2 class="journey-gate-title" id="journey-gate-title">A celebration<br><em>to come home to.</em></h2>
+      <p class="journey-gate-copy">Tap once to begin the film and music.</p>
+      <button class="journey-start" id="journey-start" type="button">Tap here to begin</button>
+    </div>
+  </section>
+  <main inert>
     <section class="film-scroll" id="film" aria-label="A cinematic journey through the temple">
       <div class="film-stage" id="film-stage">
         <video class="film-video" id="film-video" muted playsinline preload="auto" poster="assets/temple-poster.jpg" aria-hidden="true"></video>
-        <audio id="background-music" src="assets/wedding-bgm.mp3" preload="auto" autoplay loop></audio>
+        <audio id="background-music" src="assets/wedding-bgm.mp3" preload="auto" loop></audio>
         <div class="film-shade" aria-hidden="true"></div>
         <header class="masthead">
           <span class="top-date">The celebrations &nbsp;↗</span>
@@ -260,7 +272,6 @@
           <button class="chapter-button" type="button" data-go="11" aria-label="The invitation"><span>12</span><span>The invitation</span></button>
         </nav>
         <div class="chapter-label" aria-live="polite"><span class="chapter-number">01</span><span id="chapter-name">The beginning</span></div>
-        <button class="music-toggle" id="music-toggle" type="button" aria-pressed="false" aria-label="Play background music">Play music</button>
         <button class="autoplay-toggle" id="autoplay-toggle" type="button" aria-pressed="false">Play journey</button>
         <button class="scroll-cue" id="scroll-cue" type="button">Scroll to unfold <span aria-hidden="true">↓</span></button>
         <div class="film-progress" aria-hidden="true"><span id="progress-fill"></span></div>
@@ -274,9 +285,11 @@
       const buttons = [...document.querySelectorAll('.chapter-button')];
       const video = document.querySelector('#film-video');
       const backgroundMusic = document.querySelector('#background-music');
-      const musicToggle = document.querySelector('#music-toggle');
       const stage = document.querySelector('#film-stage');
       const film = document.querySelector('#film');
+      const journeyGate = document.querySelector('#journey-gate');
+      const journeyStart = document.querySelector('#journey-start');
+      const main = document.querySelector('main');
       const chapterName = document.querySelector('#chapter-name');
       const scrollCue = document.querySelector('#scroll-cue');
       const loader = document.querySelector('#film-loader');
@@ -287,42 +300,22 @@
       const chapterLabels = ['The beginning', 'The blessing', 'The light', 'The gathering', 'Mehendi', 'The invitation', 'The wedding day', 'The venue', 'The horizon', 'The promise', 'A new chapter', 'The celebrations'];
       const progressFill = document.querySelector('#progress-fill');
       const autoplayToggle = document.querySelector('#autoplay-toggle');
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       let currentChapter = -1;
       let rafPending = false;
       let wheelTarget = null;
       let wheelRaf = 0;
       let autoplayFrame = 0;
-      let autoplayTimer = 0;
       let autoplayPageTop = 0;
       let autoplayPageDistance = 0;
       let autoplayProgress = null;
-      let autoplayScheduled = false;
       let autoplayRunning = false;
       let filmReady = false;
-      let musicManuallySelected = false;
 
       backgroundMusic.volume = .48;
-
-      const updateMusicButton = () => {
-        const playing = !backgroundMusic.paused;
-        musicToggle.textContent = playing ? 'Pause music' : 'Play music';
-        musicToggle.setAttribute('aria-pressed', String(playing));
-        musicToggle.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
-      };
       const startMusic = () => {
         const playRequest = backgroundMusic.play();
-        if (playRequest && typeof playRequest.catch === 'function') playRequest.catch(updateMusicButton);
+        if (playRequest && typeof playRequest.catch === 'function') playRequest.catch(() => {});
       };
-
-      musicToggle.addEventListener('click', () => {
-        musicManuallySelected = true;
-        if (backgroundMusic.paused) startMusic();
-        else backgroundMusic.pause();
-      });
-      backgroundMusic.addEventListener('play', updateMusicButton);
-      backgroundMusic.addEventListener('pause', updateMusicButton);
-      startMusic();
 
       video.src = 'assets/temple-film.mp4?v=20261031-chapter-scenes';
       video.muted = true;
@@ -330,7 +323,7 @@
       video.preload = 'auto';
 
       const updateAutoplayButton = () => {
-        const active = autoplayScheduled || autoplayRunning;
+        const active = autoplayRunning;
         autoplayToggle.textContent = active ? 'Pause journey' : 'Play journey';
         autoplayToggle.setAttribute('aria-pressed', String(active));
         autoplayToggle.setAttribute('aria-label', active ? 'Pause automatic invitation scroll' : 'Play invitation automatically');
@@ -377,11 +370,8 @@
         requestAnimationFrame(update);
       };
       const pauseAutoplay = (syncToPage = false) => {
-        if (autoplayTimer) window.clearTimeout(autoplayTimer);
         if (autoplayFrame) cancelAnimationFrame(autoplayFrame);
-        autoplayTimer = 0;
         autoplayFrame = 0;
-        autoplayScheduled = false;
         autoplayRunning = false;
         video.pause();
         video.playbackRate = 1;
@@ -422,9 +412,6 @@
       };
       const startAutoplay = () => {
         if (!filmReady || !video.duration) return;
-        if (autoplayTimer) window.clearTimeout(autoplayTimer);
-        autoplayTimer = 0;
-        autoplayScheduled = false;
         const stageTop = film.getBoundingClientRect().top + window.scrollY;
         const totalScroll = Math.max(1, film.offsetHeight - window.innerHeight);
         autoplayPageTop = stageTop;
@@ -451,8 +438,17 @@
           autoplayFrame = requestAnimationFrame(autoplayStep);
         }
       };
+      journeyStart.addEventListener('click', () => {
+        journeyGate.classList.remove('is-visible');
+        journeyGate.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('is-start-gated');
+        main.inert = false;
+        startMusic();
+        startAutoplay();
+        autoplayToggle.focus({ preventScroll: true });
+      });
       autoplayToggle.addEventListener('click', () => {
-        if (autoplayScheduled || autoplayRunning) pauseAutoplay(true);
+        if (autoplayRunning) pauseAutoplay(true);
         else startAutoplay();
       });
 
@@ -471,12 +467,14 @@
       };
       const stopForManualInput = (event) => {
         stopWheelScroll();
-        if (!musicManuallySelected && backgroundMusic.paused && !musicToggle.contains(event.target)) startMusic();
-        if (event.target !== autoplayToggle && !musicToggle.contains(event.target)) pauseAutoplay(true);
+        if (event.target !== autoplayToggle && !journeyStart.contains(event.target)) pauseAutoplay(true);
       };
       const handleWheel = (event) => {
         if (event.ctrlKey || event.shiftKey || event.deltaY === 0 || document.body.classList.contains('is-loading')) return;
-        if (!musicManuallySelected && backgroundMusic.paused) startMusic();
+        if (journeyGate.classList.contains('is-visible')) {
+          event.preventDefault();
+          return;
+        }
         pauseAutoplay(true);
         const delta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaMode === 2 ? event.deltaY * window.innerHeight : event.deltaY;
         const maxScroll = Math.max(0, film.offsetHeight - window.innerHeight);
@@ -562,23 +560,21 @@
       const revealFilm = () => {
         if (filmReady || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) return;
         filmReady = true;
-        if (!musicManuallySelected) startMusic();
         video.pause();
         video.currentTime = 0;
         loaderProgress.style.width = '100%';
         loaderPercent.textContent = '100%';
         document.body.classList.remove('is-loading');
+        document.body.classList.add('is-start-gated');
         resetFilmPosition();
         loader.classList.add('is-gone');
+        journeyGate.classList.add('is-visible');
+        journeyGate.setAttribute('aria-hidden', 'false');
         window.setTimeout(() => {
           loader.remove();
           resetFilmPosition();
+          journeyStart.focus({ preventScroll: true });
         }, 700);
-        if (!window.location.hash && !reduceMotion.matches) {
-          autoplayScheduled = true;
-          updateAutoplayButton();
-          autoplayTimer = window.setTimeout(startAutoplay, 650);
-        }
       };
       video.addEventListener('progress', updateLoader);
       video.addEventListener('canplaythrough', revealFilm);
