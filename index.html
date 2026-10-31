@@ -503,6 +503,10 @@
           progress = 0;
           window.scrollTo(0, stageTop);
         }
+        if (musicFinished) {
+          musicFinished = false;
+          backgroundMusic.currentTime = 0;
+        }
         autoplayProgress = progress;
         video.pause();
         video.playbackRate = autoplayRateAt(progress);
