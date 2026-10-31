@@ -160,7 +160,7 @@
     <section class="film-scroll" id="film" aria-label="A cinematic journey through the temple">
       <div class="film-stage" id="film-stage">
         <video class="film-video" id="film-video" muted playsinline preload="auto" poster="assets/temple-poster.jpg" aria-hidden="true"></video>
-        <audio id="background-music" src="assets/wedding-bgm.mp3" preload="auto" loop></audio>
+        <audio id="background-music" src="assets/wedding-bgm.mp3" preload="auto" autoplay loop></audio>
         <div class="film-shade" aria-hidden="true"></div>
         <header class="masthead">
           <span class="top-date">The celebrations &nbsp;↗</span>
@@ -322,6 +322,7 @@
       });
       backgroundMusic.addEventListener('play', updateMusicButton);
       backgroundMusic.addEventListener('pause', updateMusicButton);
+      startMusic();
 
       video.src = 'assets/temple-film.mp4?v=20261031-chapter-scenes';
       video.muted = true;
