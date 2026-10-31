@@ -36,8 +36,10 @@
     .film-stage.is-opening .brand, .film-stage.is-opening .top-date { color: rgba(247,240,228,.9); }
     .film-stage.is-opening .chapter-label, .film-stage.is-opening .scroll-cue { color: rgba(247,240,228,.84); }
     .film-video, .film-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
-    .film-video { z-index: -2; display: block; object-fit: cover; object-position: center; transform: scale(1.025); will-change: transform; }
+    .film-video { z-index: -2; display: block; object-fit: cover; object-position: center; filter: contrast(1.14) saturate(1.12) brightness(1.025); transform: scale(1.025); will-change: transform; }
     .film-shade { z-index: -1; pointer-events: none; background: linear-gradient(180deg, rgba(13,12,10,.015) 0%, rgba(13,12,10,.025) 47%, rgba(12,10,8,.22) 100%); }
+    .film-shade::after { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 64%, rgba(9,8,7,.44) 0%, rgba(9,8,7,.28) 38%, rgba(9,8,7,0) 72%); content: ""; opacity: 0; transition: opacity .7s ease; }
+    .film-stage.is-late-chapter .film-shade::after { opacity: 1; }
     .film-stage::after { position: absolute; inset: 0; z-index: -1; pointer-events: none; content: ""; border: 1px solid rgba(255,255,255,.035); }
     .masthead { position: absolute; z-index: 5; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 25px clamp(22px, 4vw, 62px); color: var(--cream); text-shadow: 0 2px 20px rgba(0,0,0,.18); }
     .brand { font-size: 9px; font-weight: 600; letter-spacing: .22em; text-decoration: none; text-transform: uppercase; }
@@ -46,6 +48,9 @@
     .chapter-copy { position: absolute; top: 67%; left: 50%; width: min(790px, calc(100% - 54px)); text-align: center; opacity: 0; transform: translate(-50%, calc(-50% + 18px)); pointer-events: none; transition: opacity .45s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
     .chapter-copy.is-current { opacity: 1; transform: translate(-50%, -50%); }
     .chapter-copy[data-chapter="0"] { top: 56%; width: min(1000px, calc(100% - 54px)); }
+    .chapter-copy[data-chapter="0"] .couple-names { display: flex; align-items: center; justify-content: center; gap: clamp(7px, 1.3vw, 14px); margin-bottom: 20px; color: var(--cream); font: 400 clamp(32px, 4.1vw, 54px)/1 var(--serif); letter-spacing: -.035em; text-transform: none; text-shadow: 0 3px 24px rgba(0,0,0,.48); }
+    .chapter-copy[data-chapter="0"] .couple-names::before, .chapter-copy[data-chapter="0"] .couple-names::after { width: clamp(12px, 2.8vw, 32px); height: 1px; background: var(--gold); content: ""; opacity: .82; }
+    .chapter-copy[data-chapter="0"] .couple-name-amp { color: var(--gold); font-size: .76em; font-style: italic; }
     .chapter-copy[data-chapter="10"], .chapter-copy[data-chapter="11"] { transition-duration: 2.2s, 2.2s; transition-timing-function: ease-in-out, cubic-bezier(.22,.61,.36,1); }
     .chapter-copy[data-chapter="11"] { top: 50%; }
     .chapter-copy[data-chapter="11"].is-current .reveal { animation-duration: 1.05s; }
@@ -66,7 +71,7 @@
     .chapter-copy[data-chapter="0"] .chapter-message { margin-top: 30px; }
     .chapter-copy[data-chapter="0"] .chapter-meta { margin-top: 40px; }
     h1 em, h2 em { font-weight: 400; }
-    .couple-names { margin: 0 0 23px; color: var(--soft); font-size: 9px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; }
+    .couple-names { margin: 0 0 23px; color: var(--soft); font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; }
     .chapter-message { max-width: 470px; margin: 20px auto 0; color: var(--soft); font: 18px/1.48 var(--serif); }
     .chapter-meta { margin: 24px 0 0; color: var(--soft); font: 10px/1.8 var(--serif); letter-spacing: .08em; text-transform: uppercase; }
     .event-details { width: min(580px, 100%); margin: 30px auto 0; border-top: 1px solid rgba(217,192,138,.65); border-bottom: 1px solid rgba(217,192,138,.65); }
@@ -96,8 +101,8 @@
     .journey-gate.is-visible { opacity: 1; visibility: visible; pointer-events: auto; }
     .letter-cover { width: min(900px, 100%); text-align: center; }
     .cover-eyebrow { margin: 0 0 10px; color: var(--gold); font-size: 9px; font-weight: 600; letter-spacing: .34em; text-transform: uppercase; }
-    .cover-couple { display: flex; align-items: baseline; justify-content: center; gap: clamp(8px, 1.6vw, 19px); margin: 0; color: var(--cream); font: 400 clamp(46px, 7vw, 76px)/.95 var(--serif); letter-spacing: -.045em; text-shadow: 0 4px 30px rgba(0,0,0,.35); }
-    .cover-couple-amp { color: var(--gold); font-style: italic; font-size: .72em; }
+    .cover-couple { display: flex; align-items: baseline; justify-content: center; gap: clamp(7px, 1.3vw, 16px); margin: 0; color: var(--cream); font: 400 clamp(56px, 8vw, 92px)/.95 var(--serif); letter-spacing: -.045em; text-shadow: 0 4px 30px rgba(0,0,0,.35); }
+    .cover-couple-amp { color: var(--gold); font-style: italic; font-size: .76em; }
     .cover-details { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; max-width: 100%; margin: 16px auto 24px; padding: 10px 19px; border: 1px solid rgba(217,192,138,.65); border-radius: 999px; color: var(--soft); background: rgba(20,18,15,.65); box-shadow: 0 8px 30px rgba(0,0,0,.2); font-size: 8px; font-weight: 500; letter-spacing: .1em; }
     .cover-details i { color: var(--gold); font-size: 9px; font-style: normal; }
     .cover-envelope { position: relative; width: min(540px, 100%); height: auto; aspect-ratio: 560 / 340; margin: 0 auto; overflow: hidden; border: 1px solid rgba(217,192,138,.9); border-radius: 4.3% / 7%; background: #f7f0e4; box-shadow: 0 24px 85px rgba(0,0,0,.38); perspective: 900px; }
@@ -139,8 +144,8 @@
       .journey-gate { padding: 18px; }
       .letter-cover { width: 100%; }
       .cover-eyebrow { margin-bottom: 12px; font-size: 8px; }
-      .cover-couple { display: grid; gap: 0; font-size: clamp(39px, 10vw, 52px); }
-      .cover-couple-amp { font-size: .58em; line-height: 1.2; }
+      .cover-couple { display: grid; gap: 0; font-size: clamp(43px, 11vw, 60px); }
+      .cover-couple-amp { font-size: .62em; line-height: 1.2; }
       .cover-details { gap: 7px 10px; margin: 14px auto 19px; padding: 9px 14px; border-radius: 17px; font-size: 7px; }
       .cover-details span:last-child { flex-basis: 100%; }
       .cover-envelope { height: auto; aspect-ratio: 560 / 340; }
@@ -150,12 +155,14 @@
       .brand { max-width: 55%; font-size: 7px; letter-spacing: .17em; }
       .chapter-copy { top: 65%; width: calc(100% - 52px); }
       .chapter-copy[data-chapter="0"] { top: 54%; width: calc(100% - 30px); }
+      .chapter-copy[data-chapter="0"] .couple-names { gap: 5px; font-size: clamp(22px, 6.6vw, 32px); }
+      .chapter-copy[data-chapter="0"] .couple-names::before, .chapter-copy[data-chapter="0"] .couple-names::after { width: 10px; }
       .chapter-copy[data-chapter="11"] { top: 49%; width: calc(100% - 46px); }
       h1, h2 { font-size: clamp(45px, 12vw, 67px); }
       .chapter-copy[data-chapter="0"] h1 { font-size: clamp(42px, 10vw, 62px); line-height: .9; }
       .chapter-copy[data-chapter="0"] .chapter-message, .chapter-copy[data-chapter="0"] .chapter-meta { margin-top: 20px; }
       .eyebrow { margin-bottom: 18px; font-size: 7px; }
-      .couple-names { font-size: 7px; line-height: 1.8; }
+      .couple-names { font-size: 8px; line-height: 1.8; }
       .chapter-message { max-width: 330px; margin-top: 17px; font-size: 16px; }
       .chapter-meta { margin-top: 18px; font-size: 8px; }
       .event-details { margin-top: 20px; }
@@ -232,7 +239,7 @@
         </header>
 
         <article class="chapter-copy is-current" data-chapter="0" aria-live="polite">
-          <p class="couple-names reveal">Anushree &amp; Balakrishna</p>
+          <p class="couple-names reveal"><span>Anushree</span><i class="couple-name-amp">&amp;</i><span>Balakrishna</span></p>
           <h1 class="reveal">A celebration<br><em>to come home to.</em></h1>
           <p class="chapter-message reveal">With the blessings of our families, we invite you to celebrate with us.</p>
           <p class="chapter-meta reveal">Sunday, 15 November 2026 · 11:51<br>R. N. Shetty Hall · Kundapura</p>
@@ -404,6 +411,7 @@
       const setChapter = (index) => {
         if (index === currentChapter) return;
         currentChapter = index;
+        stage.classList.toggle('is-late-chapter', index >= 7);
         chapters.forEach((chapter, i) => {
           chapter.classList.toggle('is-current', i === index);
           chapter.setAttribute('aria-hidden', i === index ? 'false' : 'true');
