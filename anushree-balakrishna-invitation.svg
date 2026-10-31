@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-labelledby="title desc">
   <title id="title">Anushree weds Balakrishna — wedding invitation</title>
-  <desc id="desc">A traditional ivory and deep maroon invitation for Mehendi on 13 November 2026 and the wedding on 15 November 2026 at R. N. Shetty Hall, Kundapura.</desc>
+  <desc id="desc">A traditional ivory and deep maroon wedding invitation for 15 November 2026 at R. N. Shetty Hall, Kundapura.</desc>
   <defs>
     <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#fbf5e9"/>
@@ -107,7 +107,7 @@
   <!-- Date and time panel -->
   <path d="M248 1201H832M248 1451H832" stroke="#ad8440" stroke-width="1.5"/>
   <path d="M257 1192l9 9-9 9-9-9ZM823 1192l9 9-9 9-9-9ZM257 1442l9 9-9 9-9-9ZM823 1442l9 9-9 9-9-9Z" fill="#ad8440"/>
-  <text x="540" y="1270" text-anchor="middle" fill="#8d6a34" font-family="Segoe UI, Arial, sans-serif" font-size="18" letter-spacing="3">MEHENDI · FRIDAY, 13 NOVEMBER 2026</text>
+  <text x="540" y="1270" text-anchor="middle" fill="#8d6a34" font-family="Segoe UI, Arial, sans-serif" font-size="23" letter-spacing="8">SUNDAY</text>
   <text x="540" y="1341" text-anchor="middle" fill="#64202b" font-family="Georgia, 'Times New Roman', serif" font-size="47" letter-spacing="2">15 NOVEMBER 2026</text>
   <text x="540" y="1401" text-anchor="middle" fill="#5b4737" font-family="Segoe UI, Arial, sans-serif" font-size="25" letter-spacing="3">WEDDING · SUNDAY · 11:51 AM</text>
 

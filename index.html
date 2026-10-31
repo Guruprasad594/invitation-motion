@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#14120f">
-  <meta name="description" content="Anushree and Balakrishna celebrate Mehendi on 13 November 2026 and marry on 15 November at 11:51 at R. N. Shetty Hall, Kundapura.">
+  <meta name="description" content="Anushree and Balakrishna invite you to celebrate their wedding on 15 November 2026 at 11:51 at R. N. Shetty Hall, Kundapura.">
   <title>Anushree &amp; Balakrishna — Wedding Invitation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +46,14 @@
     .chapter-copy { position: absolute; top: 67%; left: 50%; width: min(790px, calc(100% - 54px)); text-align: center; opacity: 0; transform: translate(-50%, calc(-50% + 18px)); pointer-events: none; transition: opacity .45s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
     .chapter-copy.is-current { opacity: 1; transform: translate(-50%, -50%); }
     .chapter-copy[data-chapter="0"] { top: 56%; width: min(1000px, calc(100% - 54px)); }
+    .chapter-copy[data-chapter="10"], .chapter-copy[data-chapter="11"] { transition-duration: 2.2s, 2.2s; transition-timing-function: ease-in-out, cubic-bezier(.22,.61,.36,1); }
     .chapter-copy[data-chapter="11"] { top: 50%; }
+    .chapter-copy[data-chapter="11"].is-current .reveal { animation-duration: 1.05s; }
+    .chapter-copy[data-chapter="11"] .event-row { opacity: 0; transform: translateY(10px); }
+    .chapter-copy[data-chapter="11"].is-current .event-row { animation: reveal-line .8s cubic-bezier(.2,.7,.2,1) both; }
+    .chapter-copy[data-chapter="11"] .event-row:nth-child(1) { animation-delay: .82s; }
+    .chapter-copy[data-chapter="11"] .event-row:nth-child(2) { animation-delay: 1.12s; }
+    .chapter-copy[data-chapter="11"] .event-row:nth-child(3) { animation-delay: 1.42s; }
     .chapter-copy.is-current .reveal { animation: reveal-line .72s cubic-bezier(.2,.7,.2,1) both; }
     .chapter-copy .reveal:nth-child(1) { animation-delay: .08s; }
     .chapter-copy .reveal:nth-child(2) { animation-delay: .28s; }
@@ -85,13 +92,25 @@
     .autoplay-toggle { position: absolute; z-index: 7; right: clamp(22px, 4vw, 60px); bottom: 66px; padding: 10px 13px; border: 1px solid rgba(247,240,228,.34); border-radius: 999px; color: rgba(247,240,228,.88); background: rgba(20,19,17,.22); backdrop-filter: blur(8px); font: 600 8px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: background .2s ease, border-color .2s ease; }
     .autoplay-toggle:hover { border-color: var(--gold); background: rgba(20,19,17,.45); }
     body.is-start-gated { overflow: hidden; }
-    .journey-gate { position: fixed; z-index: 45; inset: 0; display: grid; place-items: center; padding: 24px; background: rgba(20,18,15,.42); backdrop-filter: blur(3px); text-align: center; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .55s ease, visibility .55s ease; }
+    .journey-gate { position: fixed; z-index: 45; inset: 0; display: grid; place-items: center; overflow-y: auto; padding: 24px; background: radial-gradient(ellipse at 50% 42%, rgba(217,192,138,.13), transparent 58%), linear-gradient(180deg, rgba(10,12,12,.24), rgba(12,11,9,.62)); backdrop-filter: blur(1px); text-align: center; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .55s ease, visibility .55s ease; }
     .journey-gate.is-visible { opacity: 1; visibility: visible; pointer-events: auto; }
-    .journey-gate-card { width: min(560px, 100%); padding: clamp(28px, 6vw, 54px); border: 1px solid rgba(217,192,138,.55); background: rgba(20,18,15,.66); box-shadow: 0 18px 80px rgba(0,0,0,.2); }
-    .journey-gate-title { margin: 0; color: var(--cream); font: 400 clamp(37px, 7vw, 64px)/.98 var(--serif); letter-spacing: -.035em; }
-    .journey-gate-copy { margin: 20px 0 26px; color: var(--soft); font: 17px/1.5 var(--serif); }
-    .journey-start { padding: 14px 24px; border: 1px solid var(--gold); color: #17140e; background: var(--gold); font: 600 9px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; cursor: pointer; transition: background .2s ease, color .2s ease; }
-    .journey-start:hover { color: var(--cream); background: transparent; }
+    .letter-cover { width: min(900px, 100%); text-align: center; }
+    .cover-eyebrow { margin: 0 0 10px; color: var(--gold); font-size: 9px; font-weight: 600; letter-spacing: .34em; text-transform: uppercase; }
+    .cover-couple { display: flex; align-items: baseline; justify-content: center; gap: clamp(8px, 1.6vw, 19px); margin: 0; color: var(--cream); font: 400 clamp(46px, 7vw, 76px)/.95 var(--serif); letter-spacing: -.045em; text-shadow: 0 4px 30px rgba(0,0,0,.35); }
+    .cover-couple-amp { color: var(--gold); font-style: italic; font-size: .72em; }
+    .cover-details { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; max-width: 100%; margin: 16px auto 24px; padding: 10px 19px; border: 1px solid rgba(217,192,138,.65); border-radius: 999px; color: var(--soft); background: rgba(20,18,15,.65); box-shadow: 0 8px 30px rgba(0,0,0,.2); font-size: 8px; font-weight: 500; letter-spacing: .1em; }
+    .cover-details i { color: var(--gold); font-size: 9px; font-style: normal; }
+    .cover-envelope { position: relative; width: min(540px, 100%); height: auto; aspect-ratio: 560 / 340; margin: 0 auto; overflow: hidden; border: 1px solid rgba(217,192,138,.9); border-radius: 4.3% / 7%; background: #f7f0e4; box-shadow: 0 24px 85px rgba(0,0,0,.38); perspective: 900px; }
+    .envelope-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .envelope-flap-top { position: absolute; z-index: 4; inset: 0; background: linear-gradient(160deg, #fffaf0, #f2e8d7); clip-path: polygon(2% 4%, 98% 4%, 50% 52%); filter: drop-shadow(0 1px 0 rgba(151,111,58,.42)); transform-origin: 50% 4%; backface-visibility: hidden; transition: transform .75s cubic-bezier(.2,.7,.2,1); }
+    .cover-open { position: absolute; z-index: 5; top: calc(47% - 46px); left: 50%; display: grid; justify-items: center; gap: clamp(36px, 7vw, 54px); padding: 0; border: 0; color: #f7f0e4; background: transparent; cursor: pointer; transform: translateX(-50%); transition: opacity .35s ease, transform .35s ease; }
+    .cover-seal { position: relative; display: grid; place-items: center; width: 92px; height: 92px; border: 1px solid #e3cb93; border-radius: 50%; color: #4d3326; background: radial-gradient(circle at 32% 26%, #ead8a4, #be9855 68%, #916a36); box-shadow: 0 5px 22px rgba(0,0,0,.28), inset 0 0 0 5px rgba(255,238,190,.15); transition: transform .25s ease, box-shadow .25s ease; }
+    .cover-seal::before { position: absolute; inset: 7px; border: 1px solid rgba(82,55,32,.48); border-radius: 50%; content: ""; }
+    .cover-open:hover .cover-seal { box-shadow: 0 8px 30px rgba(217,192,138,.38), inset 0 0 0 5px rgba(255,238,190,.2); transform: scale(1.06); }
+    .seal-monogram { color: #fff5da; font: italic 20px/1 var(--serif); }
+    .cover-tap-label { color: #80694d; font: 600 8px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; text-shadow: 0 1px 0 rgba(255,255,255,.5); }
+    .journey-gate.is-opening .envelope-flap-top { transform: rotateX(180deg); }
+    .journey-gate.is-opening .cover-open { opacity: 0; transform: translate(-50%, -8px); pointer-events: none; }
     .chapter-label .chapter-number { color: var(--gold); }
     .scroll-cue { right: clamp(22px, 4vw, 60px); padding: 0; border: 0; background: transparent; cursor: pointer; }
     .scroll-cue[hidden] { display: none; }
@@ -117,6 +136,16 @@
       .film-scroll { height: 16000svh; }
       .film-stage { min-height: 540px; }
       .film-video { object-position: center; }
+      .journey-gate { padding: 18px; }
+      .letter-cover { width: 100%; }
+      .cover-eyebrow { margin-bottom: 12px; font-size: 8px; }
+      .cover-couple { display: grid; gap: 0; font-size: clamp(39px, 10vw, 52px); }
+      .cover-couple-amp { font-size: .58em; line-height: 1.2; }
+      .cover-details { gap: 7px 10px; margin: 14px auto 19px; padding: 9px 14px; border-radius: 17px; font-size: 7px; }
+      .cover-details span:last-child { flex-basis: 100%; }
+      .cover-envelope { height: auto; aspect-ratio: 560 / 340; }
+      .cover-open { top: calc(47% - 32px); gap: clamp(26px, 8vw, 36px); }
+      .cover-seal { width: 64px; height: 64px; }
       .masthead { padding: 18px 19px; }
       .brand { max-width: 55%; font-size: 7px; letter-spacing: .17em; }
       .chapter-copy { top: 65%; width: calc(100% - 52px); }
@@ -161,18 +190,42 @@
     <button class="loader-retry" id="loader-retry" type="button" hidden>Try loading again</button>
   </div>
   <section class="journey-gate" id="journey-gate" role="dialog" aria-modal="true" aria-labelledby="journey-gate-title" aria-hidden="true">
-    <div class="journey-gate-card">
-      <p class="loader-copy">Anushree &amp; Balakrishna</p>
-      <h2 class="journey-gate-title" id="journey-gate-title">A celebration<br><em>to come home to.</em></h2>
-      <p class="journey-gate-copy">Tap once to begin the film and music.</p>
-      <button class="journey-start" id="journey-start" type="button">Tap here to begin</button>
+    <div class="letter-cover">
+      <p class="cover-eyebrow">A celebration of love</p>
+      <h2 class="cover-couple" id="journey-gate-title"><span>Anushree</span><i class="cover-couple-amp">&amp;</i><span>Balakrishna</span></h2>
+      <div class="cover-details" aria-label="Sunday, 15 November 2026 at 11:51, R. N. Shetty Hall, Kundapura">
+        <span>Sunday · 15 November 2026</span><i aria-hidden="true">✦</i><span>11:51</span><i aria-hidden="true">✦</i><span>R. N. Shetty Hall · Kundapura</span>
+      </div>
+      <div class="cover-envelope">
+        <svg class="envelope-art" viewBox="0 0 560 340" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="envelopeTop" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffaf0"/><stop offset="1" stop-color="#f1e6d3"/></linearGradient>
+            <linearGradient id="envelopeLeft" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eee3d1"/><stop offset="1" stop-color="#f8f2e7"/></linearGradient>
+            <linearGradient id="envelopeRight" x1="1" y1="0" x2="0" y2="1"><stop stop-color="#eee3d1"/><stop offset="1" stop-color="#fbf6ec"/></linearGradient>
+            <linearGradient id="envelopeBottom" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#eee2ce"/><stop offset="1" stop-color="#faf4e9"/></linearGradient>
+            <clipPath id="envelopeClip"><rect x="1" y="1" width="558" height="338" rx="24"/></clipPath>
+          </defs>
+          <g clip-path="url(#envelopeClip)">
+            <rect width="560" height="340" fill="#f7f0e4"/>
+            <path d="M12 12H548L280 170Z" fill="url(#envelopeTop)"/>
+            <path d="M12 12L280 170L12 288Z" fill="url(#envelopeLeft)"/>
+            <path d="M548 12L280 170L548 288Z" fill="url(#envelopeRight)"/>
+            <path d="M12 288L280 170L548 288V316Q548 328 536 328H24Q12 328 12 316Z" fill="url(#envelopeBottom)"/>
+            <path d="M12 12L280 170L548 12M12 288L280 170L548 288" fill="none" stroke="#d9c08a" stroke-opacity=".52" stroke-width="1.2"/>
+            <path d="M160 180L280 328M400 180L280 328" fill="none" stroke="#b99a67" stroke-opacity=".42" stroke-width="1"/>
+          </g>
+          <rect x="1" y="1" width="558" height="338" rx="24" fill="none" stroke="#d9c08a" stroke-width="1.5"/>
+        </svg>
+        <div class="envelope-flap envelope-flap-top" aria-hidden="true"></div>
+        <button class="cover-open" id="journey-start" type="button" aria-label="Tap to open the wedding invitation and start the film with music"><span class="cover-seal"><span class="seal-monogram">A♡B</span></span><span class="cover-tap-label">Tap to open</span></button>
+      </div>
     </div>
   </section>
   <main inert>
     <section class="film-scroll" id="film" aria-label="A cinematic journey through the temple">
       <div class="film-stage" id="film-stage">
         <video class="film-video" id="film-video" muted playsinline preload="auto" poster="assets/temple-poster.jpg" aria-hidden="true"></video>
-        <audio id="background-music" src="assets/wedding-bgm.mp3" preload="auto" loop></audio>
+        <audio id="background-music" src="assets/wedding-bgm.mp3" preload="auto"></audio>
         <div class="film-shade" aria-hidden="true"></div>
         <header class="masthead">
           <span class="top-date">The celebrations &nbsp;↗</span>
@@ -180,9 +233,9 @@
 
         <article class="chapter-copy is-current" data-chapter="0" aria-live="polite">
           <p class="couple-names reveal">Anushree &amp; Balakrishna</p>
-          <h1 class="reveal">Two days of joy.<br><em>A lifetime of love.</em></h1>
+          <h1 class="reveal">A celebration<br><em>to come home to.</em></h1>
           <p class="chapter-message reveal">With the blessings of our families, we invite you to celebrate with us.</p>
-          <p class="chapter-meta reveal">Mehendi · Friday, 13 November 2026<br>Wedding · Sunday, 15 November 2026 · 11:51<br>Wedding venue · R. N. Shetty Hall · Kundapura</p>
+          <p class="chapter-meta reveal">Sunday, 15 November 2026 · 11:51<br>R. N. Shetty Hall · Kundapura</p>
         </article>
         <article class="chapter-copy" data-chapter="1" aria-live="polite">
           <p class="eyebrow reveal">In the quiet, we found our answer</p>
@@ -203,9 +256,9 @@
           <div class="filigree reveal" aria-hidden="true">✦</div>
         </article>
         <article class="chapter-copy" data-chapter="4" aria-live="polite">
-          <p class="eyebrow reveal">Let the celebrations begin</p>
-          <h2 class="reveal">Colour, laughter,<br><em>and Mehendi.</em></h2>
-          <p class="chapter-message reveal">Friday, 13 November 2026</p>
+          <p class="eyebrow reveal">A thousand little joys</p>
+          <h2 class="reveal">Our favourite place<br><em>is together.</em></h2>
+          <p class="chapter-message reveal">The laughter, the little moments, and all the days still to come.</p>
           <div class="filigree reveal" aria-hidden="true">✦</div>
         </article>
         <article class="chapter-copy" data-chapter="5" aria-live="polite">
@@ -249,7 +302,6 @@
           <h2 class="reveal">Please join us<br><em>for the celebrations.</em></h2>
           <p class="chapter-message reveal">We look forward to sharing these special days with you.</p>
           <div class="event-details reveal">
-            <div class="event-row"><strong>Mehendi</strong><span>Friday, 13 November 2026</span></div>
             <div class="event-row"><strong>Wedding date</strong><span>Sunday, 15 November 2026</span></div>
             <div class="event-row"><strong>Wedding time</strong><span>11:51</span></div>
             <div class="event-row"><strong>Wedding venue</strong><span>R. N. Shetty Hall, Kundapura</span></div>
@@ -262,7 +314,7 @@
           <button class="chapter-button" type="button" data-go="1" aria-label="The blessing"><span>02</span><span>The blessing</span></button>
           <button class="chapter-button" type="button" data-go="2" aria-label="The light"><span>03</span><span>The light</span></button>
           <button class="chapter-button" type="button" data-go="3" aria-label="The gathering"><span>04</span><span>The gathering</span></button>
-          <button class="chapter-button" type="button" data-go="4" aria-label="Mehendi"><span>05</span><span>Mehendi</span></button>
+          <button class="chapter-button" type="button" data-go="4" aria-label="The little joys"><span>05</span><span>The little joys</span></button>
           <button class="chapter-button" type="button" data-go="5" aria-label="The invitation"><span>06</span><span>The invitation</span></button>
           <button class="chapter-button" type="button" data-go="6" aria-label="The wedding day"><span>07</span><span>The wedding day</span></button>
           <button class="chapter-button" type="button" data-go="7" aria-label="The venue"><span>08</span><span>The venue</span></button>
@@ -297,7 +349,7 @@
       const loaderPercent = document.querySelector('#loader-percent');
       const loaderError = document.querySelector('#loader-error');
       const loaderRetry = document.querySelector('#loader-retry');
-      const chapterLabels = ['The beginning', 'The blessing', 'The light', 'The gathering', 'Mehendi', 'The invitation', 'The wedding day', 'The venue', 'The horizon', 'The promise', 'A new chapter', 'The celebrations'];
+      const chapterLabels = ['The beginning', 'The blessing', 'The light', 'The gathering', 'The little joys', 'The invitation', 'The wedding day', 'The venue', 'The horizon', 'The promise', 'A new chapter', 'The celebrations'];
       const progressFill = document.querySelector('#progress-fill');
       const autoplayToggle = document.querySelector('#autoplay-toggle');
       let currentChapter = -1;
@@ -310,12 +362,28 @@
       let autoplayProgress = null;
       let autoplayRunning = false;
       let filmReady = false;
+      let musicFinished = false;
 
       backgroundMusic.volume = .48;
       const startMusic = () => {
+        if (musicFinished) return;
         const playRequest = backgroundMusic.play();
         if (playRequest && typeof playRequest.catch === 'function') playRequest.catch(() => {});
       };
+      const syncMusicToFilm = () => {
+        if (musicFinished) return;
+        if (Number.isFinite(video.duration) && Number.isFinite(backgroundMusic.duration) && backgroundMusic.readyState >= HTMLMediaElement.HAVE_METADATA) {
+          const target = Math.min((video.currentTime / video.duration) * backgroundMusic.duration, Math.max(0, backgroundMusic.duration - .05));
+          if (Math.abs(backgroundMusic.currentTime - target) > .35) backgroundMusic.currentTime = target;
+        }
+        if (backgroundMusic.paused) startMusic();
+      };
+
+      video.addEventListener('play', syncMusicToFilm);
+      backgroundMusic.addEventListener('ended', () => { musicFinished = true; });
+      backgroundMusic.addEventListener('loadedmetadata', () => {
+        if (!video.paused) syncMusicToFilm();
+      });
 
       video.src = 'assets/temple-film.mp4?v=20261031-chapter-scenes';
       video.muted = true;
@@ -369,11 +437,12 @@
         rafPending = true;
         requestAnimationFrame(update);
       };
-      const pauseAutoplay = (syncToPage = false) => {
+      const pauseAutoplay = (syncToPage = false, pauseMusic = true) => {
         if (autoplayFrame) cancelAnimationFrame(autoplayFrame);
         autoplayFrame = 0;
         autoplayRunning = false;
         video.pause();
+        if (pauseMusic) backgroundMusic.pause();
         video.playbackRate = 1;
         if (syncToPage && autoplayProgress !== null) {
           window.scrollTo(0, autoplayPageTop + autoplayPageDistance * autoplayProgress);
@@ -386,12 +455,16 @@
       const autoplayRateAt = (progress) => {
         const chapterPosition = progress * chapters.length;
         const sectionStart = 4;
-        const sectionEnd = 6;
+        const weddingStart = 6;
         const ramp = .2;
-        const intensity = chapterPosition < sectionStart || chapterPosition >= sectionEnd
-          ? 0
-          : Math.min(1, (chapterPosition - sectionStart) / ramp, (sectionEnd - chapterPosition) / ramp);
-        return 1 + intensity * .25;
+        if (chapterPosition < sectionStart) return 1;
+        if (chapterPosition < sectionStart + ramp) return 1 + ((chapterPosition - sectionStart) / ramp) * .25;
+        if (chapterPosition < weddingStart - ramp) return 1.25;
+        if (chapterPosition < weddingStart) {
+          const transition = (chapterPosition - (weddingStart - ramp)) / ramp;
+          return 1.25 - transition * .05;
+        }
+        return 1.2;
       };
       const autoplayStep = () => {
         if (!autoplayRunning || !video.duration) return;
@@ -405,7 +478,7 @@
           autoplayProgress = 1;
           window.scrollTo(0, autoplayPageTop + autoplayPageDistance);
           update();
-          pauseAutoplay();
+          pauseAutoplay(false, false);
           return;
         }
         autoplayFrame = requestAnimationFrame(autoplayStep);
@@ -439,16 +512,26 @@
         }
       };
       journeyStart.addEventListener('click', () => {
-        journeyGate.classList.remove('is-visible');
-        journeyGate.setAttribute('aria-hidden', 'true');
+        journeyStart.disabled = true;
+        journeyGate.classList.add('is-opening');
         document.body.classList.remove('is-start-gated');
         main.inert = false;
         startMusic();
         startAutoplay();
-        autoplayToggle.focus({ preventScroll: true });
+        window.setTimeout(() => {
+          journeyGate.classList.remove('is-visible');
+          journeyGate.setAttribute('aria-hidden', 'true');
+          autoplayToggle.focus({ preventScroll: true });
+        }, 220);
       });
       autoplayToggle.addEventListener('click', () => {
-        if (autoplayRunning) pauseAutoplay(true);
+        if (autoplayRunning) pauseAutoplay(false);
+        else startAutoplay();
+      });
+      stage.addEventListener('click', (event) => {
+        if (!filmReady || event.target.closest('button, a')) return;
+        stopWheelScroll();
+        if (autoplayRunning) pauseAutoplay(false);
         else startAutoplay();
       });
 
@@ -466,6 +549,7 @@
         document.documentElement.style.removeProperty('scroll-behavior');
       };
       const stopForManualInput = (event) => {
+        if (stage.contains(event.target)) return;
         stopWheelScroll();
         if (event.target !== autoplayToggle && !journeyStart.contains(event.target)) pauseAutoplay(true);
       };
