@@ -84,6 +84,9 @@
     .chapter-label { left: clamp(22px, 4vw, 60px); }
     .autoplay-toggle { position: absolute; z-index: 7; right: clamp(22px, 4vw, 60px); bottom: 66px; padding: 10px 13px; border: 1px solid rgba(247,240,228,.34); border-radius: 999px; color: rgba(247,240,228,.88); background: rgba(20,19,17,.22); backdrop-filter: blur(8px); font: 600 8px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: background .2s ease, border-color .2s ease; }
     .autoplay-toggle:hover { border-color: var(--gold); background: rgba(20,19,17,.45); }
+    .music-toggle { position: absolute; z-index: 7; top: 68px; right: clamp(22px, 4vw, 60px); padding: 10px 13px; border: 1px solid rgba(247,240,228,.34); border-radius: 999px; color: rgba(247,240,228,.88); background: rgba(20,19,17,.28); backdrop-filter: blur(8px); font: 600 8px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: background .2s ease, border-color .2s ease; }
+    .music-toggle::before { margin-right: 7px; color: var(--gold); content: "♫"; font-size: 12px; }
+    .music-toggle:hover, .music-toggle[aria-pressed="true"] { border-color: var(--gold); background: rgba(20,19,17,.48); }
     .chapter-label .chapter-number { color: var(--gold); }
     .scroll-cue { right: clamp(22px, 4vw, 60px); padding: 0; border: 0; background: transparent; cursor: pointer; }
     .scroll-cue[hidden] { display: none; }
@@ -134,6 +137,7 @@
       .chapter-button span:first-child { display: block; font-size: 6px; }
       .chapter-label { bottom: 31px; left: 19px; max-width: calc(100% - 175px); font-size: 7px; }
       .scroll-cue { right: 19px; bottom: 70px; font-size: 7px; }
+      .music-toggle { top: 55px; right: 19px; padding: 9px 11px; font-size: 7px; }
       .top-date { font-size: 7px; letter-spacing: .13em; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -156,6 +160,7 @@
     <section class="film-scroll" id="film" aria-label="A cinematic journey through the temple">
       <div class="film-stage" id="film-stage">
         <video class="film-video" id="film-video" muted playsinline preload="auto" poster="assets/temple-poster.jpg" aria-hidden="true"></video>
+        <audio id="background-music" src="assets/wedding-bgm.mp3" preload="auto" loop></audio>
         <div class="film-shade" aria-hidden="true"></div>
         <header class="masthead">
           <span class="top-date">The celebrations &nbsp;↗</span>
@@ -255,6 +260,7 @@
           <button class="chapter-button" type="button" data-go="11" aria-label="The invitation"><span>12</span><span>The invitation</span></button>
         </nav>
         <div class="chapter-label" aria-live="polite"><span class="chapter-number">01</span><span id="chapter-name">The beginning</span></div>
+        <button class="music-toggle" id="music-toggle" type="button" aria-pressed="false" aria-label="Play background music">Play music</button>
         <button class="autoplay-toggle" id="autoplay-toggle" type="button" aria-pressed="false">Play journey</button>
         <button class="scroll-cue" id="scroll-cue" type="button">Scroll to unfold <span aria-hidden="true">↓</span></button>
         <div class="film-progress" aria-hidden="true"><span id="progress-fill"></span></div>
@@ -267,6 +273,8 @@
       const chapters = [...document.querySelectorAll('.chapter-copy')];
       const buttons = [...document.querySelectorAll('.chapter-button')];
       const video = document.querySelector('#film-video');
+      const backgroundMusic = document.querySelector('#background-music');
+      const musicToggle = document.querySelector('#music-toggle');
       const stage = document.querySelector('#film-stage');
       const film = document.querySelector('#film');
       const chapterName = document.querySelector('#chapter-name');
@@ -292,6 +300,28 @@
       let autoplayScheduled = false;
       let autoplayRunning = false;
       let filmReady = false;
+      let musicManuallySelected = false;
+
+      backgroundMusic.volume = .48;
+
+      const updateMusicButton = () => {
+        const playing = !backgroundMusic.paused;
+        musicToggle.textContent = playing ? 'Pause music' : 'Play music';
+        musicToggle.setAttribute('aria-pressed', String(playing));
+        musicToggle.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
+      };
+      const startMusic = () => {
+        const playRequest = backgroundMusic.play();
+        if (playRequest && typeof playRequest.catch === 'function') playRequest.catch(updateMusicButton);
+      };
+
+      musicToggle.addEventListener('click', () => {
+        musicManuallySelected = true;
+        if (backgroundMusic.paused) startMusic();
+        else backgroundMusic.pause();
+      });
+      backgroundMusic.addEventListener('play', updateMusicButton);
+      backgroundMusic.addEventListener('pause', updateMusicButton);
 
       video.src = 'assets/temple-film.mp4?v=20261031-chapter-scenes';
       video.muted = true;
@@ -440,10 +470,12 @@
       };
       const stopForManualInput = (event) => {
         stopWheelScroll();
-        if (event.target !== autoplayToggle) pauseAutoplay(true);
+        if (!musicManuallySelected && backgroundMusic.paused && !musicToggle.contains(event.target)) startMusic();
+        if (event.target !== autoplayToggle && !musicToggle.contains(event.target)) pauseAutoplay(true);
       };
       const handleWheel = (event) => {
         if (event.ctrlKey || event.shiftKey || event.deltaY === 0 || document.body.classList.contains('is-loading')) return;
+        if (!musicManuallySelected && backgroundMusic.paused) startMusic();
         pauseAutoplay(true);
         const delta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaMode === 2 ? event.deltaY * window.innerHeight : event.deltaY;
         const maxScroll = Math.max(0, film.offsetHeight - window.innerHeight);
@@ -529,6 +561,7 @@
       const revealFilm = () => {
         if (filmReady || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) return;
         filmReady = true;
+        if (!musicManuallySelected) startMusic();
         video.pause();
         video.currentTime = 0;
         loaderProgress.style.width = '100%';

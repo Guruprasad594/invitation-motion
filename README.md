@@ -16,4 +16,4 @@ This is a static website. It has no build step or package installation.
 
 The root `netlify.toml` already sets the publish directory. The main page is `index.html`.
 
-The temple film is bundled locally as `assets/temple-film.mp4`, with `assets/temple-poster.jpg` as its poster. The fonts load from Google Fonts and fall back to system fonts if that service is unavailable.
+The temple film and wedding background music are bundled locally as `assets/temple-film.mp4` and `assets/wedding-bgm.mp3`. Guests can start or pause the music with the on-page music button. The fonts load from Google Fonts and fall back to system fonts if that service is unavailable.
