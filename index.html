@@ -52,13 +52,9 @@
     .chapter-copy[data-chapter="0"] .couple-names::before, .chapter-copy[data-chapter="0"] .couple-names::after { width: clamp(12px, 2.8vw, 32px); height: 1px; background: var(--gold); content: ""; opacity: .82; }
     .chapter-copy[data-chapter="0"] .couple-name-amp { color: var(--gold); font-size: .76em; font-style: italic; }
     .chapter-copy[data-chapter="10"], .chapter-copy[data-chapter="11"] { transition-duration: 2.2s, 2.2s; transition-timing-function: ease-in-out, cubic-bezier(.22,.61,.36,1); }
-    .chapter-copy[data-chapter="11"] { top: 50%; }
+    .chapter-copy[data-chapter="11"] { top: 50%; isolation: isolate; width: min(850px, calc(100% - 54px)); padding: clamp(22px, 3vw, 38px); }
+    .chapter-copy[data-chapter="11"]::before { position: absolute; z-index: -1; inset: 0; border: 1px solid rgba(217,192,138,.82); border-radius: 8px; background: linear-gradient(180deg, rgba(12,11,9,.58), rgba(12,11,9,.76)), url("assets/couple-photo.jpeg") center 42% / cover no-repeat; box-shadow: 0 18px 60px rgba(0,0,0,.42); content: ""; }
     .chapter-copy[data-chapter="11"].is-current .reveal { animation-duration: 1.05s; }
-    .chapter-copy[data-chapter="8"] { display: grid; grid-template-columns: minmax(0, 1fr) minmax(190px, 240px); align-items: center; gap: clamp(24px, 4vw, 44px); width: min(860px, calc(100% - 54px)); text-align: left; }
-    .chapter-copy[data-chapter="8"] h2 { grid-column: 1; }
-    .chapter-copy[data-chapter="8"] .chapter-message { grid-column: 1; max-width: 470px; margin: 18px 0 0; }
-    .couple-photo { grid-column: 2; grid-row: 1 / span 2; width: 100%; aspect-ratio: 2 / 3; margin: 0; overflow: hidden; border: 1px solid rgba(217,192,138,.82); border-radius: 4px; background: rgba(20,18,15,.75); box-shadow: 0 16px 48px rgba(0,0,0,.42); }
-    .couple-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
     .chapter-copy[data-chapter="11"] .event-row { opacity: 0; transform: translateY(10px); }
     .chapter-copy[data-chapter="11"].is-current .event-row { animation: reveal-line .8s cubic-bezier(.2,.7,.2,1) both; }
     .chapter-copy[data-chapter="11"] .event-row:nth-child(1) { animation-delay: .82s; }
@@ -164,10 +160,7 @@
       .chapter-copy[data-chapter="0"] { top: 54%; width: calc(100% - 30px); }
       .chapter-copy[data-chapter="0"] .couple-names { gap: 5px; font-size: clamp(22px, 6.6vw, 32px); }
       .chapter-copy[data-chapter="0"] .couple-names::before, .chapter-copy[data-chapter="0"] .couple-names::after { width: 10px; }
-      .chapter-copy[data-chapter="8"] { top: 65%; width: calc(100% - 30px); grid-template-columns: minmax(0, 1fr) minmax(108px, 36vw); gap: 14px; }
-      .chapter-copy[data-chapter="8"] h2 { font-size: clamp(32px, 8.5vw, 50px); }
-      .chapter-copy[data-chapter="8"] .chapter-message { max-width: none; margin-top: 12px; font-size: clamp(13px, 3.5vw, 15px); line-height: 1.4; }
-      .chapter-copy[data-chapter="11"] { top: 49%; width: calc(100% - 46px); }
+      .chapter-copy[data-chapter="11"] { top: 49%; width: calc(100% - 30px); padding: 18px 16px; }
       h1, h2 { font-size: clamp(45px, 12vw, 67px); }
       .chapter-copy[data-chapter="0"] h1 { font-size: clamp(42px, 10vw, 62px); line-height: .9; }
       .chapter-copy[data-chapter="0"] .chapter-message, .chapter-copy[data-chapter="0"] .chapter-meta { margin-top: 20px; }
@@ -299,7 +292,6 @@
         <article class="chapter-copy" data-chapter="8" aria-live="polite">
           <h2 class="reveal">A new chapter<br><em>begins.</em></h2>
           <p class="chapter-message reveal">Your presence and blessings will mean the world to us.</p>
-          <figure class="couple-photo reveal"><img src="assets/couple-photo.jpeg" alt="Anushree and Balakrishna together outside a traditional home"></figure>
         </article>
         <article class="chapter-copy" data-chapter="9" aria-live="polite">
           <h2 class="reveal">And so,<br><em>the vows begin.</em></h2>
